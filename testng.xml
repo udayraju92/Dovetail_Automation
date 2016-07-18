@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+	<test name="FFTest">
+		<parameter name="browser" value="Firefox" />
+		<classes>
+			<class name="com.testhouse.TestScript.CustomerServices" />
+			<class name="com.testhouse.TestScript.SubscriptionManagement" />
+			<class name="com.testhouse.TestScript.CustomerBilling" />
+			<class name="com.testhouse.TestScript.RenewalStartegy" />
+			<class name="com.testhouse.TestScript.Schedules" />
+		</classes>
+	</test>
+</suite>
