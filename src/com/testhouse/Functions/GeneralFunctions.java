@@ -146,8 +146,21 @@ public class GeneralFunctions extends CustomerServiceObjects
 	{
 		try
 		{	
-			WebDriverWait wait = new WebDriverWait(driver, 50); 
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(by));		
+//			WebDriverWait wait = new WebDriverWait(driver, 50); 
+//			wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+			for (int i=1; i<=100; i++)
+			{
+				if(element(driver, by).isDisplayed())
+				{
+					System.out.println("found");
+					TimeUnit.SECONDS.sleep(2);
+				}
+				else
+				{
+					System.out.println("Element not found");
+					break;
+				}
+			}
 			
 		} 
 		catch (Exception e) 
@@ -346,6 +359,24 @@ public class GeneralFunctions extends CustomerServiceObjects
 			js.executeScript(
 					"arguments[0].setAttribute('style', arguments[1]);",
 					element(driver, by), "");
+		}
+	}
+	
+	public void waitForElement1(WebDriver driver, By by) throws InterruptedException
+	{
+		System.out.println("wait happened");
+		for (int i=1; i<=100; i++)
+		{
+			if(!element(driver, by).isDisplayed())
+			{
+				System.out.println("Not found");
+				TimeUnit.SECONDS.sleep(2);
+			}
+			else
+			{
+				System.out.println("Element found");
+				break;
+			}
 		}
 	}
 }

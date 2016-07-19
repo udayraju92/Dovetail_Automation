@@ -4,11 +4,11 @@
 	<test name="FFTest">
 		<parameter name="browser" value="Firefox" />
 		<classes>
-			<class name="com.testhouse.TestScript.CustomerServices" />
+<!-- 			<class name="com.testhouse.TestScript.CustomerServices" /> -->
 			<class name="com.testhouse.TestScript.SubscriptionManagement" />
-			<class name="com.testhouse.TestScript.CustomerBilling" />
-			<class name="com.testhouse.TestScript.RenewalStartegy" />
-			<class name="com.testhouse.TestScript.Schedules" />
+<!-- 			<class name="com.testhouse.TestScript.CustomerBilling" /> -->
+<!-- 			<class name="com.testhouse.TestScript.RenewalStartegy" /> -->
+<!-- 			<class name="com.testhouse.TestScript.Schedules" /> -->
 		</classes>
 	</test>
 </suite>

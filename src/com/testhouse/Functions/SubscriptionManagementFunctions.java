@@ -45,11 +45,11 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			
 			addressDetails(driver, postCode, address);
 			
-			if(offer=="CREDIT_CARD")
+			if(offer.contains("CREDIT_CARD"))
 			{
 				paymentDetails_CreditCardOffer(driver, customerName, cardNumber, expiryMonth, expiryYear);
 			}
-			else if(offer=="DIRECT_DEBIT")
+			else if(offer.contains("DIRECT_DEBIT"))
 			{
 				paymentDetails_DirectDebitOffer(driver, customerName, accountNumber, sortCode);
 			}
@@ -59,11 +59,10 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			confirmOrder(driver, noOfCopies);
 			
 			element(driver, placeOrderButton).click();
-			
+			waitForElementToVanish(driver, spinnerSM);
+			TimeUnit.SECONDS.sleep(5);
 			orderRef = element(driver, customerReferenceNumber).getText();
 			
-			element(driver, orderConfirmation_Next).click();
-			waitForElementToVanish(driver, spinnerSM);
 			ATUReports.add("New subscription has been done sucessfully with order reference number as:"+orderRef, "Promotion name: "+ promotionName,"Order Reference",orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
@@ -96,16 +95,23 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{
 		try
 		{
+			TimeUnit.SECONDS.sleep(3);
 			Select(element(driver, promotion_Country)).selectByVisibleText(country);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, promotion_PromotionName).sendKeys(promotionName);
-			TimeUnit.SECONDS.sleep(1);
+			TimeUnit.SECONDS.sleep(3);
+			elementHighlight(driver, promotion_Search);
 			element(driver, promotion_Search).click();
-			waitForElement(driver, promotion_PromotionDialog, 50);
-
+			TimeUnit.SECONDS.sleep(10);
+			System.out.println("Click happened");
+			waitForElement1(driver, promotion_PromotionDialog);
+			System.out.println("Dialog dispalyed");
+			elementHighlight(driver, promotion_SelectPromotion(promotionName));
 			element(driver, promotion_SelectPromotion(promotionName)).click();
+			TimeUnit.SECONDS.sleep(3);
 			waitForElementToVanish(driver, spinnerSM);
 			element(driver, promotion_SelectOffer(offer)).click();
+			TimeUnit.SECONDS.sleep(3);
 			waitForElementToVanish(driver, spinnerSM);
 			ATUReports.add("Promotion has been selected successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
@@ -120,24 +126,36 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{
 		try
 		{
+			TimeUnit.SECONDS.sleep(3);
 			Select(element(driver, promotion_Country)).selectByVisibleText(country);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, promotion_PromotionName).sendKeys(promotionName);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, promotion_Search).click();
-			waitForElement(driver, promotion_PromotionDialog, 50);
-
+			waitForElement1(driver, promotion_PromotionDialog);
+			
+			elementHighlight(driver, promotion_SelectPromotion(promotionName));
+			element(driver, promotion_SelectPromotion(promotionName)).click();
+			
+			
+			waitForElementToVanish(driver, spinnerSM);
 			element(driver, promotion_Offer_ActionCheckBox(offer)).click();
 			waitForElementToVanish(driver, spinnerSM);
+			
+			element(driver, product_Quantity(productName)).clear();
 			element(driver, product_Quantity(productName)).sendKeys(quantity);
-			TimeUnit.SECONDS.sleep(1);
+			TimeUnit.SECONDS.sleep(2);
+			
 			element(driver, product_Quantity_ActionCheckBox(productName)).click();
 			waitForElementToVanish(driver, spinnerSM);
-			if(element(driver, product_Quantity_ActionCheckBox(productName)).isSelected())
+			TimeUnit.SECONDS.sleep(2);
+			if(!element(driver, product_Quantity_ActionCheckBox(productName)).isSelected())
 			{
 				element(driver, product_Quantity_ActionCheckBox(productName)).click();
 				waitForElementToVanish(driver, spinnerSM);
+				TimeUnit.SECONDS.sleep(2);
 			}
+			
 			element(driver, product_SubmitButton).click();
 			waitForElementToVanish(driver, spinnerSM);
 			ATUReports.add("Promotion has been selected successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
@@ -168,10 +186,14 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{		
 		try
 		{
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, customerDetail_Title).clear();
 			element(driver, customerDetail_Title).sendKeys(custTitle);
 			TimeUnit.SECONDS.sleep(1);
+			element(driver, customerDetail_FirstName).clear();
 			element(driver, customerDetail_FirstName).sendKeys(firstName);
 			TimeUnit.SECONDS.sleep(1);
+			element(driver, customerDetail_SurName).clear();
 			element(driver, customerDetail_SurName).sendKeys(surName);
 			TimeUnit.SECONDS.sleep(1);
 			ATUReports.add("Customer Details have been entered successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
@@ -187,7 +209,6 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{		
 		try
 		{
-
 			element(driver, customerDetail_ReferenceNumber).sendKeys(referenceNumber);
 			element(driver, searchByReferenceNumber).click();
 			waitForElementToVanish(driver, spinnerSM);
@@ -206,10 +227,13 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{
 		try
 		{
+			element(driver, addressDetails_Postcode).clear();
+			TimeUnit.SECONDS.sleep(2);
 			element(driver, addressDetails_Postcode).sendKeys(postCode);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, addressDetails_PostCodeSearch).click();
-			waitForElement(driver, addressDetails_SelectAddress_Dialog, 50);
+			waitForElement1(driver, addressDetails_SelectAddress_Dialog);
+			System.out.println("dialog displayed" + addressDetails_SelectAddress(address));
 			element(driver, addressDetails_SelectAddress(address)).click();
 			waitForElementToVanish(driver, spinnerSM);
 			ATUReports.add("Address Details have been entered successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
@@ -225,6 +249,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{
 		try
 		{
+			TimeUnit.SECONDS.sleep(5);
 			element(driver, paymentDetails_CreditCard_CustomerName).sendKeys(customerName);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, paymentDetails_CreditCard_CardNumber).sendKeys(cardNumber);
@@ -245,6 +270,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{
 		try
 		{
+			TimeUnit.SECONDS.sleep(5);
 			element(driver, paymentDetails_DirectDebit_CustomerName).sendKeys(customerName);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, paymentDetails_DirectDebit_AccountNumber).sendKeys(accountNumber);
@@ -282,14 +308,16 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 		{
 			element(driver, orderSummary_NoOfCopies).clear();
 			element(driver, orderSummary_NoOfCopies).sendKeys(noOfCopies);
-			TimeUnit.SECONDS.sleep(1);
+			TimeUnit.SECONDS.sleep(4);
 			element(driver, confirmButton_SM).click();
 			waitForElementToVanish(driver, spinnerSM);
-			if(!element(driver, placeOrderButton).isDisplayed())
+			TimeUnit.SECONDS.sleep(4);
+			if(element(driver, confirmButton_SM).isDisplayed())
 			{
 				element(driver, confirmButton_SM).click();
 				waitForElementToVanish(driver, spinnerSM);
 			}
+			TimeUnit.SECONDS.sleep(10);
 			ATUReports.add("Confirm order has been performed successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
@@ -325,19 +353,21 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			
 			addressDetails(driver, postCode, address);
 			
-			if(offer=="CREDIT_CARD")
+			if(offer.contains("CREDIT_CARD"))
 			{
 				paymentDetails_CreditCardOffer(driver, customerName, cardNumber, expiryMonth, expiryYear);
 			}
-			else if(offer=="DIRECT_DEBIT")
+			else if(offer.contains("DIRECT_DEBIT"))
 			{
 				paymentDetails_DirectDebitOffer(driver, customerName, accountNumber, sortCode);
 			}
 			
 			confirmOrder(driver, noOfCopies);
 			
+			TimeUnit.SECONDS.sleep(5);
 			element(driver, placeOrderButton).click();
-			
+			waitForElementToVanish(driver, spinnerSM);
+			TimeUnit.SECONDS.sleep(5);
 			orderRef = element(driver, customerReferenceNumber).getText();
 			ATUReports.add("Renewal subscription has been done sucessfully with order reference number as:"+orderRef, "Promotion name: "+ promotionName,"Order Reference",orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
@@ -372,11 +402,11 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			
 			addressDetails(driver, postCode, address);
 			
-			if(offer=="CREDIT_CARD")
+			if(offer.contains("CREDIT_CARD"))
 			{
 				paymentDetails_CreditCardOffer(driver, customerName, cardNumber, expiryMonth, expiryYear);
 			}
-			else if(offer=="DIRECT_DEBIT")
+			else if(offer.contains("DIRECT_DEBIT"))
 			{
 				paymentDetails_DirectDebitOffer(driver, customerName, accountNumber, sortCode);
 			}
@@ -388,13 +418,17 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 				waitForElementToVanish(driver, spinnerSM);
 			}			
 			element(driver, placeOrderButton).click();
+			waitForElementToVanish(driver, spinnerSM);
+			TimeUnit.SECONDS.sleep(5);
 			orderRef = element(driver, customerReferenceNumber).getText();
 			ATUReports.add("New Product Only subscription has been done sucessfully with order reference number as:"+orderRef, "Promotion name: "+ promotionName,"Order Reference",orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
 		{
+			System.out.println(e);
 			ATUReports.add("Unable to do a new Product only subscription", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 			takeScreenShotOnFailure(driver, testName);
+			
 		}
 	}
 	
@@ -403,7 +437,8 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 		try
 		{
 			element(driver, orderConfirmation_Next).click();
-			Assert.assertEquals(Select(element(driver, SM_client)).getFirstSelectedOption(), client);
+			waitForElementToVanish(driver, spinnerSM);
+			Assert.assertEquals(Select(element(driver, SM_client)).getFirstSelectedOption().getText(), client);
 			takeScreenShotOnFailure(driver, testName);
 			ATUReports.add("Next button verification has been performed successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
@@ -419,7 +454,8 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 		try
 		{
 			element(driver, orderConfirmation_Restart).click();
-			Assert.assertEquals(Select(element(driver, SM_client)).getFirstSelectedOption(), "[Select a client]");
+			waitForElementToVanish(driver, spinnerSM);
+			Assert.assertEquals(Select(element(driver, SM_client)).getFirstSelectedOption().getText(), "[Select a client]");
 			takeScreenShotOnFailure(driver, testName);
 			ATUReports.add("Restart button verification has been performed successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}

@@ -79,27 +79,27 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		if(browser.equalsIgnoreCase("Firefox"))
 		{
 			driver = new FirefoxDriver();
-			CustomerServices.drivers.add(driver);
+			SubscriptionManagement.drivers.add(driver);
 		}
 
 		else if (browser.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir").concat(props.getProperty("chromeDriverPath")));
 			driver = new ChromeDriver();
-			CustomerServices.drivers.add(driver);
+			SubscriptionManagement.drivers.add(driver);
 		}
 
 		else if (browser.equalsIgnoreCase("IE"))
 		{
 			System.setProperty("webdriver.ie.driver",System.getProperty("user.dir").concat(props.getProperty("ieDriverPath")));
 			driver = new InternetExplorerDriver();
-			CustomerServices.drivers.add(driver);
+			SubscriptionManagement.drivers.add(driver);
 		}		
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);   
 		ATUReports.setWebDriver(driver);
 		ATUReports.indexPageDescription = "Dovetail Automation";
-		ATUReports.currentRunDescription ="Customer Service";
+		ATUReports.currentRunDescription ="Subscription Management";
 		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");
 	}
 
@@ -133,7 +133,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	 * @throws Exception 
 	 * @param newSubscription function to create a new subscription
 	 */
-	@Test(priority=0, dataProvider="databinding")
+	//@Test(priority=0, dataProvider="databinding")
 	public void newSubscription(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Subscription Management");
@@ -147,12 +147,24 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		
 		/*  Create a new subscription*/
 		newSubscription(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"), h.get("Country"), h.get("PromotionName"), h.get("CardType"), h.get("Title"), h.get("FirstName"), h.get("SurName"), h.get("PostCode"), h.get("Address"), h.get("CustomerName"), h.get("CardNumber"), h.get("ExpiryMonth"), h.get("ExpiryYear"), h.get("AccountNumber"), h.get("SortCode"), h.get("DemographicProperty1"),h.get("DemographicProperty2"), h.get("DemographicProperty3"), h.get("NoOfCopies"));
-		
+		System.out.println(orderRef);
 		/*  Verify Restart Button*/
-		verifyRestartButton(driver);
+		verifyNextButton(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"));
 		
+		String orderRefnew = orderRef.toString();
+		System.out.println(orderRefnew);
+		csf.orderRef = orderRefnew;
+		System.out.println(csf.orderRef);
 		/* Verify new subscription */
 		csf.fetchDetailsCs(driver, h.get("Client"), h.get("Brand"));
+		
+		Assert.assertEquals(csf.accountID, orderRef);
+		Assert.assertEquals(csf.verifyStatus, "ACTIVE");
+		Assert.assertEquals(csf.verifyType, "STANDARD_SUBSCRIPTION");
+		Assert.assertEquals(csf.payMethod, "CREDIT_CARD");
+		Assert.assertEquals(csf.payStatus, "Paid");
+		Assert.assertEquals(csf.renStatus, "");
+		Assert.assertEquals(csf.subRole, "DIRECT");
 		
 	}
 	
@@ -161,7 +173,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	 * @throws Exception 
 	 * @param renewalSubscription function to create a renewal subscription
 	 */
-	@Test(priority=1, dataProvider="databinding")
+	//@Test(priority=1, dataProvider="databinding")
 	public void renewalSubscription(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a Renewal subscription through Subscription Management");
@@ -175,12 +187,24 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		
 		/*  Create a new subscription*/
 		renewalSubscription(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"), h.get("Country"), h.get("PromotionName"), h.get("CardType"), h.get("ReferenceNumber"), h.get("Title"), h.get("FirstName"), h.get("SurName"), h.get("PostCode"), h.get("Address"), h.get("CustomerName"), h.get("CardNumber"), h.get("ExpiryMonth"), h.get("ExpiryYear"), h.get("AccountNumber"), h.get("SortCode"), h.get("NoOfCopies"));
-		
-		/*  Verify Restart Button*/
+		System.out.println(orderRef);
+		/*  Verify Exit Button*/
 		verifyExitButton(driver);
 		
+		String orderRefnew = orderRef.toString();
+		System.out.println(orderRefnew);
+		csf.orderRef = orderRefnew;
+		System.out.println(csf.orderRef);
 		/* Verify new subscription */
 		csf.fetchDetailsCs(driver, h.get("Client"), h.get("Brand"));
+		
+		Assert.assertEquals(csf.accountID, orderRef);
+		Assert.assertEquals(csf.verifyStatus, "ACTIVE");
+		Assert.assertEquals(csf.verifyType, "STANDARD_SUBSCRIPTION");
+		Assert.assertEquals(csf.payMethod, "CREDIT_CARD");
+		Assert.assertEquals(csf.payStatus, "Paid");
+		Assert.assertEquals(csf.renStatus, "");
+		Assert.assertEquals(csf.subRole, "DIRECT");
 		
 	}
 	
@@ -204,12 +228,26 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		/*  Create a new subscription*/
 		productOnlySubscription(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"), h.get("Country"), h.get("PromotionName"), h.get("CardType"), h.get("ProductName"), h.get("Quantity"), h.get("Title"), h.get("FirstName"), h.get("SurName"), h.get("PostCode"), h.get("Address"), h.get("CustomerName"), h.get("CardNumber"), h.get("ExpiryMonth"), h.get("ExpiryYear"), h.get("AccountNumber"), h.get("SortCode"));
 		
+		System.out.println(orderRef);
 		/*  Verify Restart Button*/
-		verifyNextButton(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"));
-		
+		verifyRestartButton(driver);
+
+		String orderRefnew = orderRef.toString();
+		System.out.println(orderRefnew);
+		csf.orderRef = orderRefnew;
+		System.out.println(csf.orderRef);
 		/* Verify new subscription */
 		csf.fetchDetailsCs(driver,  h.get("Client"), h.get("Brand"));
-		
+
+		String proId = element(driver, proAccountId).getText();
+		String proSStatus = element(driver, proSubStatus).getText();
+		String proSStype = element(driver, proSubType).getText();
+		String proPStatus = element(driver, proPaystatus).getText();
+		Assert.assertEquals(proId, orderRef);
+		Assert.assertEquals(proSStatus, "COMPLETED");
+		Assert.assertEquals(proSStype, "PRODUCT_ONLY_SUBSCRIPTION");
+		Assert.assertEquals(proPStatus, "Paid");
+
 	}
 	
 	/**
@@ -220,18 +258,21 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	@AfterMethod(alwaysRun=true)
 	public void tearDown() throws Exception 
 	{
-		try
+		/*try
 		{
 		element(driver, logOut).click();	
 		TimeUnit.SECONDS.sleep(2);
 		}catch(Exception e)
 		{
 			
-		}
-
+		}*/
+		
+		driver.manage().deleteAllCookies();
+		
+/*
 		for(WebDriver d : drivers)
 		{
 			d.quit();
-		}
+		}*/
 	}
 }

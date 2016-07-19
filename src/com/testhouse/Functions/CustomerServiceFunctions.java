@@ -17,7 +17,7 @@ import atu.testng.selenium.reports.CaptureScreen.ScreenshotOf;
 
 public class CustomerServiceFunctions extends GeneralFunctions
 {
-	String accountID = null, verifyStatus = null, verifyType = null, payMethod = null, payStatus = null, renStatus = null, subRole = null;	
+	public String accountID = null, verifyStatus = null, verifyType = null, payMethod = null, payStatus = null, renStatus = null, subRole = null;	
 	public static String testName,orderRef;
 
 	/**

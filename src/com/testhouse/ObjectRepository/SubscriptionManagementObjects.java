@@ -36,7 +36,7 @@ public class SubscriptionManagementObjects extends GeneralFunctions
 	// Promotion Details
 	public By promotion_Country = By.id("newsubscription_form:promotionPanelCountryList");
 	public By promotion_PromotionName = By.id("newsubscription_form:id_promotionName");
-	public By promotion_Search = By.xpath("//*[@title='Search']");
+	public By promotion_Search = By.xpath("//*[@id='newsubscription_form:id_promotionName']/parent::td/following-sibling::td/a");
 	public By promotion_PromotionDialog = By.id("promotionListPanelHeader");
 	public By promotion_SelectPromotion(String promotionName)
 	{
@@ -94,7 +94,7 @@ public class SubscriptionManagementObjects extends GeneralFunctions
 	public By addressDetails_PostCodeSearch = By.xpath("//td[input[@id='newsubscription_form:customerAddressPostcode']]/following-sibling::td/a[@title='Search']");
 	public By addressDetails_SelectAddress(String address)
 	{
-		By addressDetails_SelectAddress = By.xpath("//td[span[contains(text(),'"+address+"')]]/parent::tr/td/a[@title='AddressList']");
+		By addressDetails_SelectAddress = By.xpath("//td[span[contains(text(),'"+address+"')]]/preceding-sibling::td/a/img");
 		return addressDetails_SelectAddress;
 	}
 	
