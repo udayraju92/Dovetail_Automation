@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -133,7 +134,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	 * @throws Exception 
 	 * @param newSubscription function to create a new subscription
 	 */
-	//@Test(priority=0, dataProvider="databinding")
+	@Test(priority=0, dataProvider="databinding")
 	public void newSubscription(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Subscription Management");
@@ -147,14 +148,14 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		
 		/*  Create a new subscription*/
 		newSubscription(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"), h.get("Country"), h.get("PromotionName"), h.get("CardType"), h.get("Title"), h.get("FirstName"), h.get("SurName"), h.get("PostCode"), h.get("Address"), h.get("CustomerName"), h.get("CardNumber"), h.get("ExpiryMonth"), h.get("ExpiryYear"), h.get("AccountNumber"), h.get("SortCode"), h.get("DemographicProperty1"),h.get("DemographicProperty2"), h.get("DemographicProperty3"), h.get("NoOfCopies"));
-		System.out.println(orderRef);
+		
 		/*  Verify Restart Button*/
 		verifyNextButton(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"));
 		
 		String orderRefnew = orderRef.toString();
-		System.out.println(orderRefnew);
+		
 		csf.orderRef = orderRefnew;
-		System.out.println(csf.orderRef);
+		
 		/* Verify new subscription */
 		csf.fetchDetailsCs(driver, h.get("Client"), h.get("Brand"));
 		
@@ -173,7 +174,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	 * @throws Exception 
 	 * @param renewalSubscription function to create a renewal subscription
 	 */
-	//@Test(priority=1, dataProvider="databinding")
+	@Test(priority=1, dataProvider="databinding")
 	public void renewalSubscription(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a Renewal subscription through Subscription Management");
@@ -187,14 +188,13 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		
 		/*  Create a new subscription*/
 		renewalSubscription(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"), h.get("Country"), h.get("PromotionName"), h.get("CardType"), h.get("ReferenceNumber"), h.get("Title"), h.get("FirstName"), h.get("SurName"), h.get("PostCode"), h.get("Address"), h.get("CustomerName"), h.get("CardNumber"), h.get("ExpiryMonth"), h.get("ExpiryYear"), h.get("AccountNumber"), h.get("SortCode"), h.get("NoOfCopies"));
-		System.out.println(orderRef);
+		
 		/*  Verify Exit Button*/
 		verifyExitButton(driver);
 		
 		String orderRefnew = orderRef.toString();
-		System.out.println(orderRefnew);
 		csf.orderRef = orderRefnew;
-		System.out.println(csf.orderRef);
+		
 		/* Verify new subscription */
 		csf.fetchDetailsCs(driver, h.get("Client"), h.get("Brand"));
 		
@@ -203,7 +203,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		Assert.assertEquals(csf.verifyType, "STANDARD_SUBSCRIPTION");
 		Assert.assertEquals(csf.payMethod, "CREDIT_CARD");
 		Assert.assertEquals(csf.payStatus, "Paid");
-		Assert.assertEquals(csf.renStatus, "");
+		Assert.assertEquals(csf.renStatus, "Renewed");
 		Assert.assertEquals(csf.subRole, "DIRECT");
 		
 	}
@@ -227,17 +227,16 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 		
 		/*  Create a new subscription*/
 		productOnlySubscription(driver, h.get("Client"), h.get("Brand"), h.get("SubscriptionType"), h.get("Country"), h.get("PromotionName"), h.get("CardType"), h.get("ProductName"), h.get("Quantity"), h.get("Title"), h.get("FirstName"), h.get("SurName"), h.get("PostCode"), h.get("Address"), h.get("CustomerName"), h.get("CardNumber"), h.get("ExpiryMonth"), h.get("ExpiryYear"), h.get("AccountNumber"), h.get("SortCode"));
-		
-		System.out.println(orderRef);
 		/*  Verify Restart Button*/
 		verifyRestartButton(driver);
 
 		String orderRefnew = orderRef.toString();
-		System.out.println(orderRefnew);
+		
 		csf.orderRef = orderRefnew;
-		System.out.println(csf.orderRef);
+		
 		/* Verify new subscription */
-		csf.fetchDetailsCs(driver,  h.get("Client"), h.get("Brand"));
+				
+		fetchDetails(driver, h.get("Client"), h.get("Brand"));
 
 		String proId = element(driver, proAccountId).getText();
 		String proSStatus = element(driver, proSubStatus).getText();
@@ -258,21 +257,21 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	@AfterMethod(alwaysRun=true)
 	public void tearDown() throws Exception 
 	{
-		/*try
+		try
 		{
 		element(driver, logOut).click();	
 		TimeUnit.SECONDS.sleep(2);
 		}catch(Exception e)
 		{
 			
-		}*/
+		}
 		
-		driver.manage().deleteAllCookies();
+		//driver.manage().deleteAllCookies();
 		
-/*
+
 		for(WebDriver d : drivers)
 		{
 			d.quit();
-		}*/
+		}
 	}
 }

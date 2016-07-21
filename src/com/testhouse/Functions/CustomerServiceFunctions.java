@@ -111,6 +111,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, orderRefNumber).isDisplayed();
 			orderRef = element(driver, orderRefNumber).getText();
+			writeToExcel("Customer Services", 123, 6, orderRef);
 			System.out.println(orderRef);
 			ATUReports.add("New subscription has been done sucessfully with order reference number as: "+orderRef, "Promotion name: "+ promotion,"Order Reference",orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
@@ -162,22 +163,37 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			new Actions(driver).moveToElement(element(driver, viewCustomer(orderRef))).perform();
 			element(driver, viewCustomer(orderRef)).click();
 			TimeUnit.SECONDS.sleep(3);
-			if(element(driver, custAssociationNextBtn).isEnabled())
+			try
 			{
-				element(driver, custAssociationNextBtn).click();
-				TimeUnit.SECONDS.sleep(3);
+				if(element(driver, custAssociationNextBtn).isEnabled())
+				{
+					element(driver, custAssociationNextBtn).click();
+					TimeUnit.SECONDS.sleep(3);
+				}
 			}
+			catch(Exception e)
+			{
+			}
+			waitForElement1(driver, verifyCustomerRef);
+			elementHighlight(driver, verifyCustomerRef);
 			accountID = element(driver, verifyCustomerRef).getText();
+			System.out.println(accountID);
 			verifyStatus = element(driver, verifyContractStatus).getText();
+			System.out.println(verifyStatus);
 			verifyType = element(driver, verifySubType).getText();
+			System.out.println(verifyType);
 			payMethod = element(driver, paymentMethod).getText();
+			System.out.println(payMethod);
 			payStatus = element(driver, paymentStatus).getText();
+			System.out.println(payStatus);
 			subRole = element(driver, subscriberRole).getText();
+			System.out.println(subRole);
 			renStatus = element(driver, renewalStatus).getText();
+			System.out.println(renStatus);
 		}
 		catch(Exception e2)
 		{		
-			ATUReports.add("Unable to fetch details from CS screen",LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			ATUReports.add("Unable to fetch details from CS screen",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 	}
 
@@ -306,6 +322,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
 	public void verifyNewSubscriptionCSType2(WebDriver driver, String promotion, String client, String brand) throws Exception
 	{
 		try
@@ -339,6 +356,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			System.out.println(e1);
 		}
 	}
+
 
 	public void newSubscriptionCCGiftType3(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String gCustTitle, String gFirstname, String gSurname, String gPostalcode, String gAddress, String custName, String cardNum1, String date, String year) throws Exception
 	{
@@ -496,7 +514,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 	 * @throws Exception To throw an exception whenever an unexpected failure occurs
 	 * 
 	 */
-	public void newSubscriptionCCType4(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String custName, String cardNum1, String date, String year) throws Exception
+	public void newSubscriptionCCType4(WebDriver driver, String client, String brand, String promotion, String product, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String custName, String cardNum1, String date, String year) throws Exception
 	{
 		try
 		{
@@ -536,9 +554,10 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, listProButton).click();
 			TimeUnit.SECONDS.sleep(3);
-			element(driver, quantityNum).sendKeys("1");
+			element(driver, quantityNum(product)).clear();
+			element(driver, quantityNum(product)).sendKeys("1");
 			TimeUnit.SECONDS.sleep(3);
-			element(driver, quantitySel).click();
+			element(driver, quantitySel(product)).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, quantityNext).click();
 			TimeUnit.SECONDS.sleep(3);
@@ -586,6 +605,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 	/**
+
 	 * Method used for verifying the newly created subscription
 	 * @param driver Object for defining the web driver
 	 * @param promotion Variable to pass the promotion name
@@ -627,565 +647,979 @@ public class CustomerServiceFunctions extends GeneralFunctions
 	}
 
 	/**
-	 * Method used for verifying the newly created subscription
+	 * Method used for verifying the Subscription using Search
 	 * @param driver Object for defining the web driver
 	 * @param promotion Variable to pass the promotion name
 	 * @throws Exception To throw an exception whenever an unexpected failure occurs
 	 */
-	public void searchCs(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	public void searchCs_CustomerReference(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
 	{
-		try
-		{						//Customer Reference
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
 			try
 			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(5);
+				element(driver, customerRefSearch).sendKeys(customerReference);
 				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
 				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, customerRefSearch).sendKeys(customerReference);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Customer Reference number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				ATUReports.add("Unable to verify the search using Customer Reference number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 			}
-			try					//Address Line1
+			
+			new Actions(driver).moveToElement(element(driver, viewCustomersButton)).perform();
+			element(driver, viewCustomersButton).click();
+			TimeUnit.SECONDS.sleep(5);
+			new Actions(driver).moveToElement(element(driver, viewCustomer(orderRef))).perform();
+			element(driver, viewCustomer(orderRef)).click();
+			TimeUnit.SECONDS.sleep(3);
+			try
 			{
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
+				if(element(driver, custAssociationNextBtn).isEnabled())
 				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				try
-				{
-					element(driver, addressLine).sendKeys(AddressLine);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+					element(driver, custAssociationNextBtn).click();
 					TimeUnit.SECONDS.sleep(3);
 				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Address Line", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				ATUReports.add("Unable to verify the search using Address Line",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
 			}
-			try				//Post Code		
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, postcodeSearch).sendKeys(PostCode);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Post Code", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using Post Code",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//Company Name
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try{
-					element(driver, companyName).sendKeys(CompanyName);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Company Name", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using Company Name",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//Last Name
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, lastName).sendKeys(LastName);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Last Name", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using Last Name",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//First Name
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, firstNameSearch).sendKeys(FirstName);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using First Name", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using First Name",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//Email
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, email).sendKeys(Email);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Email", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using Email",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//Account Number
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, accNumberSearch).sendKeys(AccountNumber);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//Sort Code
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, sortCodeSearch).sendKeys(SortCode);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Sort code", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using Sort Code",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//CC Number
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, creditCardNum).sendKeys(CCNumber);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using CC Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using CC Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
-
-			try			//Country
-			{
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, homeLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				element(driver, customerServiceLink).click();
-				TimeUnit.SECONDS.sleep(3);
-				for (String winHandle : driver.getWindowHandles()) 
-				{
-					driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
-				}
-				Select(element(driver, clientSelect)).selectByVisibleText(client);
-				for (int i = 1; i <= 100; i++)
-				{
-					try
-					{
-						element(driver, brandSelect(brand)).click();
-						TimeUnit.SECONDS.sleep(7);
-						break;
-					}
-
-					catch (Exception e)
-					{
-						element(driver, fastFoward).click();
-					}
-				}
-
-				TimeUnit.SECONDS.sleep(3);
-				element(driver, serviceExistingSubscriptionLink).click();
-				TimeUnit.SECONDS.sleep(5);
-				try
-				{
-					element(driver, country).sendKeys(Country);
-					TimeUnit.SECONDS.sleep(3);
-					Assert.assertTrue(element(driver, verifySearch).isDisplayed());
-					TimeUnit.SECONDS.sleep(3);
-				}
-				catch(Exception e)
-				{
-					ATUReports.add("Verified search using Country", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				}
-
-			}
-			catch (Exception e)
-			{
-				ATUReports.add("Unable to verify the search using Country",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
-				takeScreenShotOnFailure(driver, testName);
-				System.out.println(e);
-			}
+			Assert.assertEquals(element(driver, verifyCustomerRef).getText(),"");
+			Assert.assertEquals(element(driver, verifyContractStatus).getText(),"");
+			Assert.assertEquals(element(driver, verifySubType).getText(),"");
+			Assert.assertEquals(element(driver, paymentMethod).getText(),"");
+			Assert.assertEquals(element(driver, paymentStatus).getText(),"");
+			subRole = element(driver, subscriberRole).getText();
+			renStatus = element(driver, renewalStatus).getText();
 		}
-		catch (Exception e1)
+		catch (Exception e)
 		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 			takeScreenShotOnFailure(driver, testName);
-			System.out.println(e1);
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_OrderReference(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_PreviousSubscriptionReference(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_AddressLine(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_PostCode(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_CompanyName(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
 		}
 	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_LastName(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_FirstName(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_Email(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_WebID(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_AccountNumber(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Account Number
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, accNumberSearch).sendKeys(AccountNumber);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Account Number", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Account Number",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_SortCode(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try			//Sort Code
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			try
+			{
+				element(driver, sortCodeSearch).sendKeys(SortCode);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Sort code", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Sort Code",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_ChequeNumber(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+
+		try					//Cheque Number
+		{
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			try
+			{
+				element(driver, addressLine).sendKeys(AddressLine);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Address Line", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Address Line",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_CreditCardNumber(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try					//Cheque Number
+		{
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			try
+			{
+				element(driver, addressLine).sendKeys(AddressLine);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Address Line", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Address Line",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_InvoiceNumber(WebDriver driver, String client, String brand, String customerReference, String AddressLine, String PostCode, String CompanyName, String LastName, String FirstName, String Email, String AccountNumber, String SortCode, String CCNumber, String Country) throws Exception
+	{
+		try					
+		{
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			try
+			{
+				element(driver, chequeNumber).sendKeys(AddressLine);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Address Line", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Address Line",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Method used for verifying the Subscription using Search
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void searchCs_Country(WebDriver driver, String client, String brand, String Country) throws Exception
+	{
+		try			
+		{
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			try
+			{
+				Select(element(driver, country)).selectByVisibleText(Country);;
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertTrue(element(driver, verifySearch).isDisplayed());
+				TimeUnit.SECONDS.sleep(3);
+			}
+			catch(Exception e)
+			{
+				ATUReports.add("Verified search using Address Line", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			}
+			
+		}
+		catch (Exception e)
+		{
+			ATUReports.add("Unable to verify the search using Address Line",LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
+		}
+	}
+
 
 	public void newSubscriptionCCGiftType5(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String gCustTitle, String gFirstname, String gSurname, String gPostalcode, String gAddress, String accHolderName, String accNumber, String SortCode) throws Exception
 	{
@@ -1288,6 +1722,8 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
+
 	public void verifyNewSubscriptionCSType5(WebDriver driver, String promotion, String client, String brand) throws Exception
 	{
 		try
@@ -1300,7 +1736,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 				Assert.assertEquals(verifyStatus, "ACTIVE");
 				Assert.assertEquals(verifyType, "GIFT_SUBSCRIPTION");
 				Assert.assertEquals(payMethod, "DIRECT_DEBIT");
-				Assert.assertEquals(payStatus, "Paid");
+				Assert.assertEquals(payStatus, "Unpaid");
 				Assert.assertEquals(renStatus, "Continious");
 				Assert.assertEquals(subRole, "DONOR");
 				ATUReports.add(verifyType + " Order: "+orderRef+"has been successfully verified in CS screen with contract status as:"+verifyStatus,"Order Reference: "+ orderRef,"Payment Method: Direct_Debit, Payment Status: UnPaid, Renewal Status: Continous, Subscriber Role: Donor","Payment Method: "+payMethod + ", Payment Status:"+payStatus+ " ,Renewal Status:"+ renStatus+", Subscriber Role: " +subRole,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
@@ -1323,6 +1759,8 @@ public class CustomerServiceFunctions extends GeneralFunctions
 
 
 	}
+
+
 	/**
 	 * Method performed to do a new subscription 
 	 * 
@@ -1344,7 +1782,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 	 * @throws Exception To throw an exception whenever an unexpected failure occurs
 	 * 
 	 */
-	public void newSubscriptionFreeType6(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address) throws Exception
+	public void newSubscriptionFreeType6(WebDriver driver, String client, String brand, String promotion, String product, String cardType, String custTitle, String firstname, String surname, String postalcode, String address) throws Exception
 	{
 		try
 		{
@@ -1371,6 +1809,8 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			}		
 			element(driver, newSubscription).click();
 			TimeUnit.SECONDS.sleep(2);
+			element(driver, proRadioButton).click();
+			TimeUnit.SECONDS.sleep(2);
 			element(driver, promotionName).sendKeys(promotion);
 			element(driver, findPromotion).click();
 			TimeUnit.SECONDS.sleep(3);
@@ -1379,6 +1819,16 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, promotionNextBtn).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, offerCard(cardType)).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, listProButton).click();
+			TimeUnit.SECONDS.sleep(5);
+
+			element(driver, quantityNum(product)).clear();
+			element(driver, quantityNum(product)).sendKeys("1");
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, quantitySel(product)).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, quantityNext).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, title).sendKeys(custTitle);
 			element(driver, firstName).sendKeys(firstname);
@@ -1415,21 +1865,25 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
+
 	public void verifyNewSubscriptionFreeType6(WebDriver driver, String promotion, String client, String brand) throws Exception
 	{
 		try
 		{
+			String proId  = null, proSStatus = null, proSStype = null, proPStatus = null;
 			try
 			{
 				fetchDetailsCs(driver, client, brand);
 				TimeUnit.SECONDS.sleep(3);
-				Assert.assertEquals(accountID, orderRef);
-				Assert.assertEquals(verifyStatus, "ACTIVE");
-				//Assert.assertEquals(verifyType, "STANDARD_SUBSCRIPTION");
-				Assert.assertEquals(payMethod, "Free");
-				//Assert.assertEquals(payStatus, "Unpaid");
-				//Assert.assertEquals(renStatus, "");
-				//Assert.assertEquals(subRole, "DIRECT");
+				proId = element(driver, proAccountId).getText();
+				proSStatus = element(driver, proSubStatus).getText();
+				proSStype = element(driver, proSubType).getText();
+				proPStatus = element(driver, proPaystatus).getText();
+				Assert.assertEquals(proId, orderRef);
+				Assert.assertEquals(proSStatus, "COMPLETED");
+				Assert.assertEquals(proSStype, "PRODUCT_ONLY_SUBSCRIPTION");
+				Assert.assertEquals(proPStatus, "Free");
 				ATUReports.add(verifyType + " Order: "+accountID+"has been successfully verified in CS screen with contract status as:"+verifyStatus,"Order Reference: "+ orderRef,"Payment Method: Free","Payment Method: "+payMethod + ", Payment Status:"+payStatus+ " ,Renewal Status:"+ renStatus+", Subscriber Role: " +subRole,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 
 				TimeUnit.SECONDS.sleep(5); 
@@ -1449,6 +1903,128 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 
 	}
+
+	public void newSubscriptionOSType7(WebDriver driver, String client, String brand, String country, String promotion, String cardType, String custTitle, String firstname, String surname, String address, String accHolderName, String accNumber, String SortCode) throws Exception
+	{
+		try
+		{
+			element(driver, customerServiceLink).click();	
+			TimeUnit.SECONDS.sleep(3);
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}		
+			element(driver, newSubscription).click();
+			TimeUnit.SECONDS.sleep(2);
+			Select(element(driver, selectCountry)).selectByVisibleText(country);
+			element(driver, promotionName).sendKeys(promotion);
+			element(driver, findPromotion).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, selectPromotion(promotion)).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, promotionNextBtn).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, offerCard(cardType)).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, title).sendKeys(custTitle);
+			element(driver, firstName).sendKeys(firstname);
+			element(driver, surName).sendKeys(surname);
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, overAddress).sendKeys(address);
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, custNextBtn).click();
+			TimeUnit.SECONDS.sleep(2);
+			try
+			{
+				element(driver, custAssociationNextBtn).isDisplayed();
+				element(driver, custAssociationNextBtn).click();
+			}
+			catch(Exception e)
+			{
+				// No Action Required
+			}
+			TimeUnit.SECONDS.sleep(2);
+			element(driver, issueCalenderNextBtn).click();
+			TimeUnit.SECONDS.sleep(2);
+			element(driver, accountHolderName).sendKeys(accHolderName);
+			TimeUnit.SECONDS.sleep(2);
+			element(driver, accountNumber).sendKeys(accNumber);
+			TimeUnit.SECONDS.sleep(2);
+			element(driver, sCode).sendKeys(SortCode);
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, lookupBankButton).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, checkoutNextBtn).click();
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, orderRefNumber).isDisplayed();
+			orderRef = element(driver, orderRefNumber).getText();
+			System.out.println(orderRef);
+			ATUReports.add("New subscription has been done sucessfully with order reference number as: "+orderRef, "Promotion name: "+ promotion,"Order Reference",orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+		}
+		catch(Exception e)
+		{
+			ATUReports.add("Unable to do a new subscription", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+		}
+	}
+
+
+	/**
+	 * Method used for verifying the newly created subscription
+	 * @param driver Object for defining the web driver
+	 * @param promotion Variable to pass the promotion name
+	 * @throws Exception To throw an exception whenever an unexpected failure occurs
+	 */
+	public void verifyNewSubscriptionCSType7(WebDriver driver, String promotion, String client, String brand) throws Exception
+	{
+		try
+		{
+			try
+			{
+				fetchDetailsCs(driver, client, brand);
+				TimeUnit.SECONDS.sleep(3);
+				TimeUnit.SECONDS.sleep(3);
+				Assert.assertEquals(accountID, orderRef);
+				Assert.assertEquals(verifyStatus, "ACTIVE");
+				Assert.assertEquals(verifyType, "STANDARD_SUBSCRIPTION");
+				Assert.assertEquals(payMethod, "DIRECT_DEBIT");
+				Assert.assertEquals(payStatus, "Unpaid");
+				Assert.assertEquals(renStatus, "Continious");
+				Assert.assertEquals(subRole, "DIRECT");
+				ATUReports.add(verifyType + " Order: "+accountID+"has been successfully verified in CS screen with contract status as:"+verifyStatus,"Order Reference: "+ orderRef,"Payment Method: Direct_Debit, Payment Status: UnPaid, Renewal Status: Continous, Subscriber Role: Direct","Payment Method: "+payMethod + ", Payment Status:"+payStatus+ " ,Renewal Status:"+ renStatus+", Subscriber Role: " +subRole,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+
+				TimeUnit.SECONDS.sleep(5); 
+			}
+			catch (AssertionError e)
+			{
+				ATUReports.add("Unable to verify the newly created subscription",accountID, verifyStatus, LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+				takeScreenShotOnFailure(driver, testName);
+				System.out.println(e);
+			}
+
+		}
+		catch (Exception e1)
+		{
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e1);
+		}
+	}
+
 	public void serviceAmendDetails(WebDriver driver, String client, String brand, String refNumber, String newName, String newAddress) throws Exception
 	{
 		orderRef=refNumber;
@@ -1484,6 +2060,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 
 	}
+
 
 	public void renewSubscription(WebDriver driver, String client, String brand, String refNumber,  String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String custName, String cardNum1, String date, String year) throws Exception
 	{
@@ -1539,6 +2116,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
 
 	public void upgradeSubscription(WebDriver driver, String client, String brand,  String refNumber,String contractType,  String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String custName, String cardNum1, String date, String year) throws Exception
 	{
@@ -1598,6 +2176,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
+
 	public void amendContract_SendLetter(WebDriver driver, String letterName, String client, String brand, String referenceNumber) throws Exception
 	{
 		orderRef = referenceNumber;
@@ -1647,7 +2226,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, amendContract).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, suspend).click();
-			/*waitForElement(driver, selectReasonSuspend, 50);*/
+			/*waitForElement(driver, selectReasonSuspend);*/
 			TimeUnit.SECONDS.sleep(10);
 			//Select(element(driver, selectReasonSuspend)).selectByVisibleText(reason);
 			elementHighlight(driver, selectReasonSuspend);
@@ -1675,7 +2254,6 @@ public class CustomerServiceFunctions extends GeneralFunctions
 	}
 
 
-
 	public void amendContract_Resume(WebDriver driver, String reason, String resumeStartFrom, String client, String brand, String referenceNumber) throws Exception
 	{
 		orderRef = referenceNumber;
@@ -1687,14 +2265,14 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, amendContract).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, resume).click();
-			waitForElement(driver, selectReasonResume, 50);
+			waitForElement(driver, selectReasonResume);
 
 			element(driver, selectReasonResume).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, resumeReason(reason)).click();
 			waitForElementToVanish(driver, spinner);
 			TimeUnit.SECONDS.sleep(3);
-			element(driver, selectReasonResume).click();
+			element(driver, resumeStartingFrom).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, resumeStartingSelect(resumeStartFrom)).click();
 			TimeUnit.SECONDS.sleep(3);
@@ -1726,6 +2304,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
+
 	public void amendContract_RefundAmount(WebDriver driver, String amount, String reason, String payeeTitle, String customerFullName,String address1, String address2, String address3, String address4, String address5, String address6, String country, String postCode, String client, String brand, String referenceNumber) throws Exception
 	{
 		orderRef = referenceNumber;
@@ -1737,7 +2316,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, amendContract).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, refundAmount).click();
-			waitForElement(driver, refundAmountValue, 50);
+			waitForElement(driver, refundAmountValue);
 
 			element(driver, refundAmountValue).sendKeys(amount);
 			TimeUnit.SECONDS.sleep(3);
@@ -1778,8 +2357,6 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, editChequeDetails_AddressLine6).sendKeys(address6);
 			TimeUnit.SECONDS.sleep(3);
 
-			//Select(element(driver,editChequeDetails_Country)).selectByVisibleText(country);
-
 			element(driver, editChequeDetails_PostCode).clear();
 			element(driver, editChequeDetails_PostCode).sendKeys(postCode);
 			TimeUnit.SECONDS.sleep(3);
@@ -1812,6 +2389,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
+
 	public void amendContract_MailingMethod(WebDriver driver, String mailingType, String client, String brand, String referenceNumber) throws Exception
 	{
 		orderRef = referenceNumber;
@@ -1823,7 +2401,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, amendContract).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, mailingMethod).click();
-			waitForElement(driver, selectMailingMethod, 50);
+			waitForElement(driver, selectMailingMethod);
 
 			Select(element(driver, selectMailingMethod)).selectByVisibleText(mailingType);
 			TimeUnit.SECONDS.sleep(3);
@@ -1844,6 +2422,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
+
 	public void amendContract_ChangeTerm(WebDriver driver, String action, String reason, String issueType, String noOfIssues, String client, String brand, String referenceNumber) throws Exception
 	{
 		orderRef = referenceNumber;
@@ -1855,17 +2434,17 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, amendContract).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, changeTerm).click();
-			waitForElement(driver, changeTerm_Action, 50);
+			waitForElement(driver, changeTerm_Action);
 
 			Select(element(driver,changeTerm_Action)).selectByVisibleText(action);
 			TimeUnit.SECONDS.sleep(3);
-
+			System.out.println("Action selected");
 			Select(element(driver,changeTerm_Reason)).selectByVisibleText(reason);
 			TimeUnit.SECONDS.sleep(3);
-
+			System.out.println("Reason selected");
 			Select(element(driver,changeTerm_IssueType)).selectByVisibleText(issueType);
 			TimeUnit.SECONDS.sleep(3);
-
+			System.out.println("Issue selected");
 			element(driver,changeTerm_NoOfIssues).clear();
 			element(driver,changeTerm_NoOfIssues).sendKeys(noOfIssues);
 
@@ -1886,6 +2465,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
 
 	public void amendContract_PaymentDetails(WebDriver driver, String accountName, String accountNumber, String sortCode, String chequeNumber, String cardNumber, String month, String year, String client, String brand, String referenceNumber) throws Exception
 	{
@@ -1942,7 +2522,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			element(driver, customerHistory).click();
 			TimeUnit.SECONDS.sleep(8);	
 
-			Assert.assertEquals(element(driver, paymentDetailsVerification).getText(), "OTHER   -   Payment detail changed");
+			Assert.assertTrue(element(driver, paymentDetailsVerification).isDisplayed());
 			ATUReports.add("Payment Details have been updated successfully : " +orderRef, "User should be able to update the payment details for the subsricption successfully", "Payment Details for Customer Reference Number "+orderRef+" has been updated successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
@@ -1951,6 +2531,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
 
 	public void amendContract_AddPayment(WebDriver driver, String accountName, String accountNumber, String sortCode, String ddCollectionDate, String client, String brand, String referenceNumber) throws Exception
 	{
@@ -1993,6 +2574,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
+
 	public void amendContract_ChangeStartIssue(WebDriver driver, String issueNumber, String client, String brand, String referenceNumber) throws Exception
 	{
 		orderRef = referenceNumber;
@@ -2022,6 +2604,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
 
 	public void amendContract_CancelImmediately(WebDriver driver, String reason, String refundAmount, String client, String brand, String referenceNumber) throws Exception
 	{
@@ -2066,6 +2649,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
+
 	public void amendContract_CancelOnExpiry(WebDriver driver, String reason, String client, String brand, String referenceNumber) throws Exception
 	{
 		orderRef = referenceNumber;
@@ -2095,7 +2679,6 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
-
 
 
 	public void differentDeliveryAddress(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String deliverypostalcode, String deliveryAddress, String custName, String cardNum1, String date, String year) throws Exception
@@ -2198,7 +2781,8 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
-	public void getDefaultPromotion(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String custName, String cardNum1, String date, String year) throws Exception
+
+	public void getDefaultPromotion(WebDriver driver, String client, String brand, String promotion, String promotionRef, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String accHolderName, String accNumber, String SortCode) throws Exception
 	{
 		try
 		{
@@ -2209,6 +2793,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
 			}
 			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			waitForElementToVanish(driver, spinner);
 			for (int i = 1; i <= 100; i++)
 			{
 				try
@@ -2227,8 +2812,11 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			TimeUnit.SECONDS.sleep(2);
 			element(driver, getDefaultPromotion).click();
 			TimeUnit.SECONDS.sleep(3);
-			element(driver, selectPromotion(promotion)).click();
-			TimeUnit.SECONDS.sleep(3);
+			waitForElementToVanish(driver, spinner);
+
+			Assert.assertEquals(element(driver, selectedPromotion).getText(), promotion);
+			Assert.assertEquals(element(driver, selectedPromotionReferenceNumber).getText(), promotionRef);
+
 			element(driver, promotionNextBtn).click();
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, offerCard(cardType)).click();
@@ -2258,13 +2846,13 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			TimeUnit.SECONDS.sleep(2);
 			element(driver, issueCalenderNextBtn).click();
 			TimeUnit.SECONDS.sleep(2);
-			element(driver, customerName).sendKeys(custName);
+			element(driver, accountHolderName).sendKeys(accHolderName);
 			TimeUnit.SECONDS.sleep(2);
-			element(driver, cardNumber).sendKeys(cardNum1);
+			element(driver, accountNumber).sendKeys(accNumber);
 			TimeUnit.SECONDS.sleep(2);
-			Select(element(driver, expiryDate)).selectByVisibleText(""+date+"");
-			TimeUnit.SECONDS.sleep(2);
-			Select(element(driver, expiryYear)).selectByVisibleText(""+year+"");	
+			element(driver, sCode).sendKeys(SortCode);
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, lookupBankButton).click();
 			TimeUnit.SECONDS.sleep(5);
 			element(driver, checkoutNextBtn).click();
 			TimeUnit.SECONDS.sleep(3);
@@ -2279,6 +2867,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
 
 	public void newSubscriptionCCCType8(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String custName, String cardNum1, String date, String year) throws Exception
 	{
@@ -2414,6 +3003,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			System.out.println(e1);
 		}
 	}
+
 
 	public void giftSubscriptionRecepientDetails(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String gCustTitle, String gFirstname, String gSurname, String gPostalcode, String gAddress, String gCustTitle1, String gFirstname1, String gSurname1, String gCustTitle2, String gFirstname2, String gSurname2, String gEditCustTitle, String gEditFirstName, String gEditSurName, String custName, String cardNum1, String date, String year) throws Exception
 	{
@@ -2592,6 +3182,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 		}
 	}
 
+
 	public void demographicsVerification(WebDriver driver, String client, String brand, String promotion, String cardType, String custTitle, String firstname, String surname, String postalcode, String address, String demographicProperty1, String demographicProperty2, String demographicProperty3, String custName, String cardNum1, String date, String year) throws Exception
 	{
 		try
@@ -2674,6 +3265,7 @@ public class CustomerServiceFunctions extends GeneralFunctions
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
+
 
 	public void customerEventsVerification(WebDriver driver, String referenceNumber, String client, String brand) throws Exception
 	{

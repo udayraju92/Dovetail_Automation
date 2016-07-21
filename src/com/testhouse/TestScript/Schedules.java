@@ -183,7 +183,7 @@ public class Schedules extends SchedulesFunctions
 	}
 
 	/**
-	 * Test to create a new Product only schedule
+	 * Test to create a new back issue schedule
 	 * @throws Exception 
 	 * 
 	 */
@@ -236,11 +236,11 @@ public class Schedules extends SchedulesFunctions
 		{
 		element(driver, logOut).click();	
 		TimeUnit.SECONDS.sleep(2);
-		}catch(Exception e)
+		}
+		catch(Exception e)
 		{
 			
 		}
-
 		for(WebDriver d : drivers)
 		{
 			d.quit();

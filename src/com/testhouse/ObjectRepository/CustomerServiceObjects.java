@@ -35,8 +35,11 @@ public class CustomerServiceObjects
 	public By newSubscription = By.id("newSubscriptionLink");	
 	public By promotionName = By.id("form:id_promoNameInputText");
 	public By findPromotion = By.xpath("//*[contains(@value,'Find Promotion')]");
+	public By country_Promotion = By.id("");
 	public By getDefaultPromotion = By.id("form:id_getDefaultPromotionButton");
-
+	public By selectedPromotion = By.xpath("//*[@id='form:id_promoMessagePanel']/tbody/tr[1]/td[2]/span");
+	public By selectedPromotionReferenceNumber = By.xpath("//*[@id='form:id_promoMessagePanel']/tbody/tr[2]/td[2]/span");
+	
 	public By selectPromotion(String promotion)
 	{
 		By selectPromotion = By.xpath("//tr/td[@class='rich-table-cell center' and text()='"+promotion+"']/following-sibling::td/input");
@@ -100,7 +103,7 @@ public class CustomerServiceObjects
 	public By verifyCustomerRef = By.id("summaryform:id_textCustOptionRef");
 	public By verifyContractStatus = By.id("summaryform:id_currContractStatustext");
 	public By verifySubType = By.id("summaryform:id_textCustOptionSubcriptionType");
-	public By paymentMethod = By.xpath("//*[contains(text(),'Payment Method')]/parent::td/following::td/span[contains(@id,'type')]");
+	public By paymentMethod = By.xpath("//*[contains(text(),'Payment Method')]/parent::td/following-sibling::td/span");
 	public By paymentStatus = By.id("summaryform:id_currcontractpaymentStatustext");
 	public By renewalStatus = By.id("summaryform:id_currcontractrenewalStatustext");
 	public By subscriberRole = By.id("summaryform:id_textCustOptionSubcriberType");
@@ -148,8 +151,16 @@ public class CustomerServiceObjects
 	//For product only subscription
 	public By proRadioButton = By.id("form:id_subscriptionOption:1");
 	public By listProButton = By.id("j_id53:id_textListProducts");
-	public By quantityNum = By.id("j_id53:id_poPurchaseList:0:id_poPurchaseQuantity");
-	public By quantitySel = By.id("j_id53:id_poPurchaseList:0:id_selectedOffer");
+	public By quantityNum(String productName) 
+	{
+		By quantityNum = By.xpath("//td[span[text()='"+productName+"']]/following-sibling::td[2]/input");
+		return quantityNum;
+	}
+	public By quantitySel(String productName)
+	{
+		By quantitySel = By.xpath("//td[span[text()='"+productName+"']]/following-sibling::td[3]/input");
+		return quantitySel;
+	}
 	public By quantityNext = By.id("j_id53:id_selectOfferNext");
 	public By proSubStatus = By.id("summaryform:id_productCurrContractStatustext");
 	public By proAccountId = By.id("summaryform:id_textProductCustOptionRef");
@@ -168,6 +179,11 @@ public class CustomerServiceObjects
 	public By sortCodeSearch = By.id("searchCriteria:id_sortcodeinputtext");
 	public By creditCardNum = By.id("searchCriteria:id_cccardnumberinputtext");
 	public By country = By.id("searchCriteria:id_countrylistmenu");
+	public By orderReference = By.id("searchCriteria:id_orderreferencetext");
+	public By PrevSubRefernece = By.id("searchCriteria:id_prevsubrefinputtext");
+	public By webID = By.id("searchCriteria:id_webidinputtext");
+	public By chequeNumber = By.id("searchCriteria:id_chequenumberinputtext");
+	public By invoiceNumber = By.id("searchCriteria:id_invoicenumberinputtext");
 
 	//Overseas
 	public By selectCountry = By.id("form:id_countryMenu");
@@ -284,7 +300,7 @@ public class CustomerServiceObjects
 	public By paymentDetails_CreditCard_StartDate_Year = By.id("transEnquiryform:id_dateExpirySelectYear");
 	public By paymentDetails_CreditCard_SaveChangesButton = By.id("transEnquiryform:id_CCSubmitChanges");
 
-	public By paymentDetailsVerification = By.xpath("//table[@id='historyform:j_id69']/tbody/tr[last()]/td[3]");
+	public By paymentDetailsVerification = By.xpath("//table[@id='historyform:j_id69']/tbody/tr[last()]/td[3][contains(text(),'Payment detail changed')]");
 
 	//Amend Contract - Add Payment
 	public By addPayment= By.id("transEnquiryform:id_amendContractButtonAddPayment");

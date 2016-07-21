@@ -109,9 +109,9 @@ public class RenewalStrategyFunctions extends RenewalStrategyObjects
 				TimeUnit.SECONDS.sleep(8);
 
 				element(driver, findDefaultPro).click();
-				TimeUnit.SECONDS.sleep(8);
+				TimeUnit.SECONDS.sleep(16);
 				element(driver, findPro).click();
-				TimeUnit.SECONDS.sleep(8);
+				TimeUnit.SECONDS.sleep(16);
 				element(driver, selectRPromotion(promotion)).click();
 				TimeUnit.SECONDS.sleep(8);
 				element(driver, selectPro).click();

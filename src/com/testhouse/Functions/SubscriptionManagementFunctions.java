@@ -33,18 +33,18 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			}
 
 			element(driver, newSubscriptionLink).click();
-			waitForElement(driver, SM_client, 50);
+			waitForElement(driver, SM_client);
 
 			subscriptionDetails(driver, client, brand, subscriptionType);
 
 			promotionDetails(driver, country, promotionName, offer);
-			
+
 			verifyPromotionSelected(driver, promotionName, offer);
-			
+
 			customerDetails(driver, custTitle, firstName, surName);
-			
+
 			addressDetails(driver, postCode, address);
-			
+
 			if(offer.contains("CREDIT_CARD"))
 			{
 				paymentDetails_CreditCardOffer(driver, customerName, cardNumber, expiryMonth, expiryYear);
@@ -53,16 +53,16 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			{
 				paymentDetails_DirectDebitOffer(driver, customerName, accountNumber, sortCode);
 			}
-			
+
 			demographics(driver, demographicProperty1, demographicProperty2, demographicProperty3);
-			
+
 			confirmOrder(driver, noOfCopies);
-			
+
 			element(driver, placeOrderButton).click();
 			waitForElementToVanish(driver, spinnerSM);
 			TimeUnit.SECONDS.sleep(5);
 			orderRef = element(driver, customerReferenceNumber).getText();
-			
+
 			ATUReports.add("New subscription has been done sucessfully with order reference number as:"+orderRef, "Promotion name: "+ promotionName,"Order Reference",orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
@@ -133,19 +133,19 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, promotion_Search).click();
 			waitForElement1(driver, promotion_PromotionDialog);
-			
+
 			elementHighlight(driver, promotion_SelectPromotion(promotionName));
 			element(driver, promotion_SelectPromotion(promotionName)).click();
-			
-			
+
+
 			waitForElementToVanish(driver, spinnerSM);
 			element(driver, promotion_Offer_ActionCheckBox(offer)).click();
 			waitForElementToVanish(driver, spinnerSM);
-			
+
 			element(driver, product_Quantity(productName)).clear();
 			element(driver, product_Quantity(productName)).sendKeys(quantity);
 			TimeUnit.SECONDS.sleep(2);
-			
+
 			element(driver, product_Quantity_ActionCheckBox(productName)).click();
 			waitForElementToVanish(driver, spinnerSM);
 			TimeUnit.SECONDS.sleep(2);
@@ -155,7 +155,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 				waitForElementToVanish(driver, spinnerSM);
 				TimeUnit.SECONDS.sleep(2);
 			}
-			
+
 			element(driver, product_SubmitButton).click();
 			waitForElementToVanish(driver, spinnerSM);
 			ATUReports.add("Promotion has been selected successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
@@ -171,9 +171,9 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 	{
 		try
 		{
-		Assert.assertEquals(element(driver, verifySelectedPromotion).getText(), promotionName);
-		Assert.assertEquals(element(driver, verifySelectedPayment).getText(), offerType);
-		ATUReports.add("Promotion Details have been verified successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			Assert.assertEquals(element(driver, verifySelectedPromotion).getText(), promotionName);
+			Assert.assertEquals(element(driver, verifySelectedPayment).getText(), offerType);
+			ATUReports.add("Promotion Details have been verified successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
 		{
@@ -326,7 +326,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
-	
+
 	public void renewalSubscription(WebDriver driver, String client, String brand, String subscriptionType, String country, String promotionName, String offer, String referenceNumber, String custTitle, String firstName, String surName, String postCode, String address, String customerName, String cardNumber, String expiryMonth, String expiryYear, String accountNumber, String sortCode, String noOfCopies) throws Exception
 	{
 		try
@@ -339,20 +339,18 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			}
 
 			element(driver, newSubscriptionLink).click();
-			waitForElement(driver, SM_client, 50);
+			waitForElement(driver, SM_client);
 
 			subscriptionDetails(driver, client, brand, subscriptionType);
 
 			promotionDetails(driver, country, promotionName, offer);
-			
+
 			verifyPromotionSelected(driver, promotionName, offer);
-			
+
 			customerDetails_Renewal(driver, referenceNumber);
-			
+
 			customerDetails(driver, custTitle, firstName, surName);
-			
-			addressDetails(driver, postCode, address);
-			
+
 			if(offer.contains("CREDIT_CARD"))
 			{
 				paymentDetails_CreditCardOffer(driver, customerName, cardNumber, expiryMonth, expiryYear);
@@ -361,9 +359,9 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			{
 				paymentDetails_DirectDebitOffer(driver, customerName, accountNumber, sortCode);
 			}
-			
+
 			confirmOrder(driver, noOfCopies);
-			
+
 			TimeUnit.SECONDS.sleep(5);
 			element(driver, placeOrderButton).click();
 			waitForElementToVanish(driver, spinnerSM);
@@ -377,7 +375,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
-	
+
 	public void productOnlySubscription(WebDriver driver, String client, String brand, String subscriptionType, String country, String promotionName, String offer, String productName, String quantity, String custTitle, String firstName, String surName, String postCode, String address, String customerName, String cardNumber, String expiryMonth, String expiryYear, String accountNumber, String sortCode) throws Exception
 	{
 		try
@@ -390,18 +388,18 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			}
 
 			element(driver, newSubscriptionLink).click();
-			waitForElement(driver, SM_client, 50);
+			waitForElement(driver, SM_client);
 
 			subscriptionDetails(driver, client, brand, subscriptionType);
 
 			promotionDetails_ProductOnly(driver, country, promotionName, offer, productName, quantity);
-			
+
 			verifyPromotionSelected(driver, promotionName, offer);
-			
+
 			customerDetails(driver, custTitle, firstName, surName);
-			
+
 			addressDetails(driver, postCode, address);
-			
+
 			if(offer.contains("CREDIT_CARD"))
 			{
 				paymentDetails_CreditCardOffer(driver, customerName, cardNumber, expiryMonth, expiryYear);
@@ -410,28 +408,36 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			{
 				paymentDetails_DirectDebitOffer(driver, customerName, accountNumber, sortCode);
 			}
-			
+
 			element(driver, confirmButton_ProductOnly_SM).click();
-			if(!element(driver, placeOrderButton).isDisplayed())
+			try
 			{
-				element(driver, confirmButton_ProductOnly_SM).click();
-				waitForElementToVanish(driver, spinnerSM);
-			}			
-			element(driver, placeOrderButton).click();
+				if(!element(driver, placeOrderButton).isDisplayed())
+				{
+					element(driver, confirmButton_ProductOnly_SM).click();
+					waitForElementToVanish(driver, spinnerSM);
+				}
+				element(driver, placeOrderButton).click();
+			}
+			catch(Exception e)
+			{
+
+			}
+
 			waitForElementToVanish(driver, spinnerSM);
 			TimeUnit.SECONDS.sleep(5);
 			orderRef = element(driver, customerReferenceNumber).getText();
-			ATUReports.add("New Product Only subscription has been done sucessfully with order reference number as:"+orderRef, "Promotion name: "+ promotionName,"Order Reference",orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			ATUReports.add("New Product Only subscription has been done sucessfully with order reference number as:"+orderRef, "Promotion name: "+ promotionName,"Order Reference: " + orderRef, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
 		{
 			System.out.println(e);
 			ATUReports.add("Unable to do a new Product only subscription", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 			takeScreenShotOnFailure(driver, testName);
-			
+
 		}
 	}
-	
+
 	public void verifyNextButton(WebDriver driver, String client, String brand, String subscriptionType) throws Exception
 	{
 		try
@@ -448,7 +454,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
-	
+
 	public void verifyRestartButton(WebDriver driver) throws Exception
 	{
 		try
@@ -465,20 +471,87 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}
-	
+
 	public void verifyExitButton(WebDriver driver) throws Exception
 	{
 		try
 		{
 			element(driver, orderConfirmation_Exit).click();
 			TimeUnit.SECONDS.sleep(10);
-			Assert.assertTrue(element(driver, newSubscriptionLink).isDisplayed());
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			TimeUnit.SECONDS.sleep(3);
+			Assert.assertTrue(element(driver, subscriptionManagementLink).isDisplayed());
 			takeScreenShotOnFailure(driver, testName);
 			ATUReports.add("Exit button verification has been performed successfully", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 		catch(Exception e)
 		{
 			ATUReports.add("Exit button verification failure", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			takeScreenShotOnFailure(driver, testName);
+		}
+	}
+
+	public void fetchDetails(WebDriver driver, String client, String brand) throws Exception
+	{
+		try
+		{
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerServiceLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			TimeUnit.SECONDS.sleep(3);
+			
+			for (String winHandle : driver.getWindowHandles()) 
+			{
+				driver.switchTo().window(winHandle); // switch focus of WebDriver to the next found window handle (that's your newly opened window)
+			}
+			Select(element(driver, clientSelect)).selectByVisibleText(client);
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, brandSelect(brand)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastFoward).click();
+				}
+			}
+
+			TimeUnit.SECONDS.sleep(3);
+			element(driver, serviceExistingSubscriptionLink).click();
+			TimeUnit.SECONDS.sleep(5);
+			element(driver, customerRefSearch).sendKeys(orderRef);
+			TimeUnit.SECONDS.sleep(2);
+			new Actions(driver).moveToElement(element(driver, viewCustomersButton)).perform();
+			element(driver, viewCustomersButton).click();
+			TimeUnit.SECONDS.sleep(5);
+			new Actions(driver).moveToElement(element(driver, viewCustomer(orderRef))).perform();
+			element(driver, viewCustomer(orderRef)).click();
+			TimeUnit.SECONDS.sleep(3);
+			try
+			{
+				if(element(driver, custAssociationNextBtn).isEnabled())
+				{
+					element(driver, custAssociationNextBtn).click();
+					TimeUnit.SECONDS.sleep(3);
+				}
+			}
+			catch(Exception e)
+			{
+			}
+			
+		}
+		catch(Exception e)
+		{
+			ATUReports.add("Unable to fetch details", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 			takeScreenShotOnFailure(driver, testName);
 		}
 	}

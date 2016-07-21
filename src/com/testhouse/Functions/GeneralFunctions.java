@@ -2,6 +2,9 @@ package com.testhouse.Functions;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
@@ -12,6 +15,14 @@ import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.joda.time.DateTime;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -113,26 +124,22 @@ public class GeneralFunctions extends CustomerServiceObjects
 	 * @param int	The time in seconds to wait until returning a failure
 	 *
 	 * @return WebElement	the first WebElement using the given method, or null (if the timeout is reached)
+	 * @throws Exception 
 	 */
-	public WebElement waitForElement(WebDriver driver, final By by, long timeOutInSeconds) 
+	public void waitForElement(WebDriver driver, final By by) throws Exception 
 	{
-		WebElement element; 
-		try
-		{	
-			// To nullify implicitlyWait()
-			driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);  
-
-			WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds); 
-			element = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
-
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); //reset implicitlyWait
-			return element; //return the element
-		} 
-		catch (Exception e) 
+		for (int i=1; i<=100; i++)
 		{
-			e.printStackTrace();
+			if(!element(driver, by).isDisplayed())
+			{
+				TimeUnit.SECONDS.sleep(2);
+			}
+			else
+			{
+				break;
+			}
 		}
-		return null;
+
 	}
 
 	/**
@@ -146,22 +153,18 @@ public class GeneralFunctions extends CustomerServiceObjects
 	{
 		try
 		{	
-//			WebDriverWait wait = new WebDriverWait(driver, 50); 
-//			wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
 			for (int i=1; i<=100; i++)
 			{
 				if(element(driver, by).isDisplayed())
 				{
-					System.out.println("found");
 					TimeUnit.SECONDS.sleep(2);
 				}
 				else
 				{
-					System.out.println("Element not found");
 					break;
 				}
 			}
-			
+
 		} 
 		catch (Exception e) 
 		{
@@ -349,7 +352,7 @@ public class GeneralFunctions extends CustomerServiceObjects
 		} 
 		return jQcondition; 
 	}
-	
+
 	public void elementHighlight(WebDriver driver, final By by) {
 		for (int i = 0; i < 2; i++) {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -361,22 +364,52 @@ public class GeneralFunctions extends CustomerServiceObjects
 					element(driver, by), "");
 		}
 	}
-	
+
 	public void waitForElement1(WebDriver driver, By by) throws InterruptedException
 	{
-		System.out.println("wait happened");
 		for (int i=1; i<=100; i++)
 		{
 			if(!element(driver, by).isDisplayed())
 			{
-				System.out.println("Not found");
 				TimeUnit.SECONDS.sleep(2);
 			}
 			else
 			{
-				System.out.println("Element found");
 				break;
 			}
 		}
 	}
+
+	@SuppressWarnings("resource")
+	public static void writeToExcel(String sheetName, int rowNumber, int cellNumber, String value) throws InvalidFormatException, IOException
+	{
+		try 
+		{
+			FileInputStream file = new FileInputStream(new File(System.getProperty("user.dir").concat(props.getProperty("testDataFilePath"))));
+
+			HSSFWorkbook workbook = new HSSFWorkbook(file);
+			HSSFSheet sheet = workbook.getSheet("Customer Services");
+			Cell cell = null;
+
+			//Update the value of cell
+			cell = sheet.getRow(rowNumber).getCell(cellNumber);
+			cell.setCellValue(value);
+
+			file.close();
+
+			FileOutputStream outFile =new FileOutputStream(new File(System.getProperty("user.dir").concat(props.getProperty("testDataFilePath"))));
+			workbook.write(outFile);
+			outFile.close();
+
+		} 
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 }

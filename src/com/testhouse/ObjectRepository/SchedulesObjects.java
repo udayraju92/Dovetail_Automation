@@ -32,10 +32,12 @@ public class SchedulesObjects extends GeneralFunctions
 	public By eventDelivery = By.xpath("//*[@id='j_id99:j_id130_body']/table/tbody/tr[2]/td[2]/select");
 	public By backDelivery = By.id("j_id99:id_IncludeOption:0");
 	public By schButton = By.id("id_scheduleForm:id_schedulesButton");
+	public By test1 = By.xpath("//table[@id='j_id99:id_allbackIssues']/tbody/tr/td[1][span[text()='JUN 05']]/following-sibling::td/input");
 	
+	//(//table[@id='j_id99:id_allbackIssues']/tbody/tr/td[1])[1]
 	public By eventDelivery(String bIssues)
 	{
-		By eventDelivery = By.xpath("//tr[2]/td[2]/input");
+		By eventDelivery = By.xpath("//table[@id='j_id99:id_allbackIssues']/tbody/tr/td[1][span[text()='"+bIssues+"']]/following-sibling::td/input");
 		// By eventDelivery = By.xpath("//*[contains(text(),'JUL 05')]/parent::td/following::input");
         return eventDelivery;
 	}
@@ -61,10 +63,10 @@ public class SchedulesObjects extends GeneralFunctions
 	/* New Event */
 	public By scheduleEventsBtn = By.id("id_scheduleForm:id_eventsButton");
 	public By newEventBtn = By.id("form:j_id93");
-	public By eventWhen = By.id("j_id99:eventWhen");
-	public By eventDeliveryType = By.id("j_id99:deliverableType");
-	public By eventNextBtn = By.id("j_id99:j_id149");
-	public By eventDest = By.id("j_id99:destinationType");
+	public By eventWhen = By.xpath("//select[@id='j_id99:eventWhen' and @name='j_id99:eventWhen']");
+	public By eventDeliveryType = By.xpath("//select[@id ='j_id99:deliverableType' and @name = 'j_id99:deliverableType']");
+	public By eventNextBtn = By.xpath("//input[@value = 'Next>' and @type = 'button']");
+	public By eventDest = By.xpath("//select[@id = 'j_id99:destinationType' and @name = 'j_id99:destinationType']");
 	public By eventFinishBtn = By.id("j_id99:j_id150");
 	public By eventSaveBtn = By.id("form:j_id94");
 	public By eventBackBtn = By.id("form:j_id95");

@@ -131,7 +131,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=0, dataProvider="databinding")
+	//@Test(priority=0, dataProvider="databinding")
 	public void customerServiceType1(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -154,7 +154,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		TimeUnit.SECONDS.sleep(3);
 
 	}
-	
+
 	/**
 	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
 	 * @param Type2: Customer service_UK Personal Subscription Issuebased_Optimistic_Single stage_DD; Renewal Strategy : Single stage;  Schedule:Direct & Optimistic; Offer: Issue based; Payment method: Direct Debit
@@ -163,7 +163,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=1, dataProvider="databinding")
+	//@Test(priority=1, dataProvider="databinding")
 	public void customerServiceType2(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -186,7 +186,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		TimeUnit.SECONDS.sleep(3);
 
 	}
-	
+
 	/**
 	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
 	 * @param Type3: Customer service_UK Gift Subscription Issuebased_Optimistic_Single stage_CC; Renewal Strategy : Single stage;  Schedule:Direct & Optimistic; Offer: Issue based; Payment method: Credit Card
@@ -195,7 +195,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=2, dataProvider="databinding")
+	//@Test(priority=2, dataProvider="databinding")
 	public void customerServiceType3(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -211,10 +211,10 @@ public class CustomerServices extends CustomerServiceFunctions
 		newSubscriptionCCGiftType3(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("GTitle"), h.get("GFirstname"), h.get("GSurname"), h.get("GPostcode"), h.get("GAddress"),h.get("CustomerName"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
 
 		/* Verify the newly created subscription in Customer Service Screen*/
-		verifyNewSubscriptionCSType5(driver, h.get("PromotionName"), h.get("Client"), h.get("Brand"));
+		verifyNewSubscriptionCSType3(driver, h.get("PromotionName"), h.get("Client"), h.get("Brand"));
 
 		/* Verify the newly created subscription in Customer Billing Screen*/
-		cbf.verifyNewSubscriptionCBType5(driver);
+		cbf.verifyNewSubscriptionCBType3(driver);
 		TimeUnit.SECONDS.sleep(3);
 
 	}
@@ -227,8 +227,8 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	
-	@Test(priority=3, dataProvider="databinding")
+
+	//@Test(priority=3, dataProvider="databinding")
 	public void customerServiceType4(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -240,8 +240,8 @@ public class CustomerServices extends CustomerServiceFunctions
 		TimeUnit.SECONDS.sleep(3);
 		login(driver, h.get("Username"), h.get("Password"), testName);
 
-		 //Creating a new subscription 		
-		newSubscriptionCCType4(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("CustomerName"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
+		//Creating a new subscription 		
+		newSubscriptionCCType4(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Product"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("CustomerName"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
 
 		// Verify the newly created subscription in Customer Service Screen
 		verifyNewSubscriptionCSType4(driver, h.get("PromotionName"), h.get("Client"), h.get("Brand"));
@@ -258,7 +258,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=4, dataProvider="databinding")
+	//@Test(priority=4, dataProvider="databinding")
 	public void customerServiceTypeSearch(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
@@ -271,7 +271,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		login(driver, h.get("Username"), h.get("Password"), testName);
 
 		/* Creating a new subscription */		
-		searchCs(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("AddressLine"), h.get("PostCode"), h.get("CompanyName"), h.get("LastName"), h.get("FirstName"), h.get("Email"), h.get("AccountNumber"), h.get("SortCode"), h.get("CCNumber"), h.get("Country"));
+		//searchCs(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("AddressLine"), h.get("PostCode"), h.get("CompanyName"), h.get("LastName"), h.get("FirstName"), h.get("Email"), h.get("AccountNumber"), h.get("SortCode"), h.get("CCNumber"), h.get("Country"));
 		TimeUnit.SECONDS.sleep(3);
 	}
 	/**
@@ -282,7 +282,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=5, dataProvider="databinding")
+	//@Test(priority=5, dataProvider="databinding")
 	public void customerServiceType5(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -313,7 +313,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=6, dataProvider="databinding")
+	//@Test(priority=6, dataProvider="databinding")
 	public void customerServiceType6(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -326,45 +326,49 @@ public class CustomerServices extends CustomerServiceFunctions
 		login(driver, h.get("Username"), h.get("Password"), testName);
 
 		/* Creating a new subscription */		
-		newSubscriptionFreeType6(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"));
+		newSubscriptionFreeType6(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Product"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"));
 
 		/* Verify the newly created subscription in Customer Service Screen*/
 		verifyNewSubscriptionFreeType6(driver, h.get("PromotionName"), h.get("Client"), h.get("Brand"));
 
 		/* Verify the newly created subscription in Customer Billing Screen*/
-		cbf.verifyNewSubscriptionCBType1(driver);
+		cbf.verifyNewSubscriptionCBType6(driver);
 		TimeUnit.SECONDS.sleep(3);
 	}
 
 
-	/*
+	//@Test(priority=7, dataProvider="databinding")
 	public void customerServiceType7(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
 		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
 
-		/* Login Section */ /*
+		// Login Section  
 		driver.get(props.getProperty("baseUrl"));
 		driver.manage().window().maximize();
 		TimeUnit.SECONDS.sleep(3);
 		login(driver, h.get("Username"), h.get("Password"), testName);
 
-		/* Creating a new subscription */		
-	//newSubscriptionDDType7(driver, h.get("Client"), h.get("Brand"), h.get("Country"),  h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"),h.get("OverAddress"), h.get("AccHolderName"), h.get("AccNumber"), h.get("SortCode"));
+		// Creating a new subscription 		
+		newSubscriptionOSType7(driver, h.get("Client"), h.get("Brand"), h.get("Country"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"),h.get("OverAddress"), h.get("AccHolderName"), h.get("AccNumber"), h.get("SortCode"));
 
-	/* Verify the newly created subscription in Customer Service Screen*/
-	//verifyNewSubscriptionCSType2(driver, h.get("PromotionName"), h.get("Client"), h.get("Brand"));
+		// Verify the newly created subscription in Customer Service Screen
+		verifyNewSubscriptionCSType7(driver, h.get("PromotionName"), h.get("Client"), h.get("Brand"));
 
-	/* Verify the newly created subscription in Customer Billing Screen*/
-	//cbf.verifyNewSubscriptionCBType2(driver);
-	//TimeUnit.SECONDS.sleep(3);}
+		// Verify the newly created subscription in Customer Billing Screen
+		cbf.verifyNewSubscriptionCBType7(driver);
+		TimeUnit.SECONDS.sleep(3);
+
+	}
+
 
 	/**
 	 * Test to check whether user can amend details in CS screen
 	 * @throws Exception 
 	 * @param check whether user can amend details in CS screen
 	 */
-	@Test(priority=7, dataProvider="databinding")
+
+	//@Test(priority=7, dataProvider="databinding")
 	public void cSServiceAmend(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -379,13 +383,13 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Amend details in CS Screen */		
 		serviceAmendDetails(driver, h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"), h.get("NewName"), h.get("NewAddress"));
 	}
-	
+
 	/**
 	 * Test to check whether user can renew a subscription from CS screen
 	 * @throws Exception 
 	 * @param check whether user can renew a subscription from CS screen
 	 */
-	@Test(priority=8, dataProvider="databinding")
+	//@Test(priority=8, dataProvider="databinding")
 	public void cSRenewSub(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -400,14 +404,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Amend details in CS Screen */		
 		renewSubscription(driver, h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"),h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("CustomerName"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
 	}
-	
+
 
 	/**
 	 * Test to check whether user can upgrade a subscription from CS screen
 	 * @throws Exception 
 	 * @param check whether user can upgrade a subscription from CS screen
 	 */
-	@Test(priority=9, dataProvider="databinding")
+	//@Test(priority=9, dataProvider="databinding")
 	public void cSUpgradeSub(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -422,14 +426,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Amend details in CS Screen */		
 		upgradeSubscription(driver, h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"),h.get("Contract") , h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("CustomerName"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
 	}
-	
-	
+
+
 	/**
 	 * Test to check whether user can Amend Contract through System letter from CS screen
 	 * @throws Exception 
 	 * @param amendContract_SendLetter function to Amend Contract in Transaction Enquiry through System Letter
 	 */
-	@Test(priority=10, dataProvider="databinding")
+	//@Test(priority=10, dataProvider="databinding")
 	public void cSAmendContract_SystemLetter(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by sending System Letter");
@@ -445,14 +449,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_SendLetter(driver, h.get("LetterName"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Suspend from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Suspend
 	 * @param Reference Number should be of a Credit Card Subscription
 	 */
-	@Test(priority=11, dataProvider="databinding")
+	//@Test(priority=11, dataProvider="databinding")
 	public void cSAmendContract_Suspend(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by sending System Letter");
@@ -468,14 +472,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Suspend Subscription */
 		amendContract_Suspend(driver, h.get("Reason"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=12, dataProvider="databinding")
+	//@Test(priority=12, dataProvider="databinding")
 	public void cSAmendContract_Resume(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by resuming the Suspended subscription");
@@ -491,14 +495,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_Resume(driver, h.get("Reason"), h.get("ResumeStartingFrom"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=13, dataProvider="databinding")
+	//@Test(priority=13, dataProvider="databinding")
 	public void cSAmendContract_RefundAmount(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by refunding the amount");
@@ -514,14 +518,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_RefundAmount(driver, h.get("Amount"), h.get("Reason"),h.get("Title"), h.get("CustomerName"),h.get("AddressLine1"),h.get("AddressLine2"),h.get("AddressLine3"),h.get("AddressLine4"),h.get("AddressLine5"),h.get("AddressLine6"),h.get("Country"),h.get("PostCode"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=14, dataProvider="databinding")
+	//@Test(priority=14, dataProvider="databinding")
 	public void cSAmendContract_MailingMethod(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by changing Mailing Method");
@@ -537,7 +541,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_MailingMethod(driver, h.get("MailingMethod"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
@@ -560,14 +564,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_ChangeTerm(driver, h.get("Action"), h.get("Reason"), h.get("IssueType"), h.get("NumberOfIssues"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=16, dataProvider="databinding")
+	//@Test(priority=16, dataProvider="databinding")
 	public void cSAmendContract_PaymentDetails(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending payment details for the Existing Subscription");
@@ -583,7 +587,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_PaymentDetails(driver, h.get("AccountName"), h.get("AccountNumber"), h.get("SortCode"), h.get("ChequeNumber"), h.get("CardNumber"), h.get("ExpiryDate"), h.get("ExpiryYear"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
@@ -606,14 +610,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_AddPayment(driver, h.get("AccountName"), h.get("AccountNumber"), h.get("SortCode"), h.get("DDCollectionDate"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=18, dataProvider="databinding")
+	//@Test(priority=18, dataProvider="databinding")
 	public void cSAmendContract_ChangeStartIssue(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by changing the Start Issue");
@@ -629,14 +633,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_ChangeStartIssue(driver, h.get("IssueNumber"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=20, dataProvider="databinding")
+	//@Test(priority=20, dataProvider="databinding")
 	public void cSAmendContract_CancelImmediately(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Cancellation of the existing subscription immediately");
@@ -652,15 +656,15 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_CancelImmediately(driver, h.get("Reason"), h.get("RefundAmount"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
-	
+
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=19, dataProvider="databinding")
+	//@Test(priority=19, dataProvider="databinding")
 	public void cSAmendContract_CancelOnExpiry(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Cancelling the existing subscription on Expiry");
@@ -676,14 +680,14 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		amendContract_CancelOnExpiry(driver, h.get("Reason"), h.get("Client"), h.get("Brand"), h.get("ReferenceNumber"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=21, dataProvider="databinding")
+	//@Test(priority=21, dataProvider="databinding")
 	public void differentDeliveryAddress(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen using Different Delivery Address");
@@ -699,7 +703,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Send System Letter */
 		differentDeliveryAddress(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("DeliveryPostCode"), h.get("DeliveryAddress"), h.get("CustomerName"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
 	}
-	
+
 	/**
 	 * Test to check whether user can Amend Contract through Resume from CS screen
 	 * @throws Exception 
@@ -720,9 +724,9 @@ public class CustomerServices extends CustomerServiceFunctions
 
 		/* Amend contract in CS Screen */
 		/* Send System Letter */
-		getDefaultPromotion(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("CustomerName"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
+		getDefaultPromotion(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("PromotionReference"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("AccHolderName"), h.get("AccNumber"), h.get("SortCode"));
 	}
-	
+
 	/**
 	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
 	 * @param Type8:Customer service_UK Personal Subscription Issuebased_Optimistic_Single stage_CCC;  Renewal Strategy : Continuous;  Schedule:Direct & Optimistic; Offer: Issue based; Payment method: Credit Card
@@ -731,7 +735,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=23, dataProvider="databinding")
+	//@Test(priority=23, dataProvider="databinding")
 	public void customerServiceType8(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -754,7 +758,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		TimeUnit.SECONDS.sleep(3);
 
 	}
-	
+
 	/**
 	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
 	 * @param Type8:Customer service_UK Personal Subscription Issuebased_Optimistic_Single stage_CCC;  Renewal Strategy : Continuous;  Schedule:Direct & Optimistic; Offer: Issue based; Payment method: Credit Card
@@ -763,7 +767,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=24, dataProvider="databinding")
+	//@Test(priority=24, dataProvider="databinding")
 	public void giftSubscriptionRecepientDetails(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen and verifying receipient details");
@@ -781,7 +785,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		TimeUnit.SECONDS.sleep(3);
 
 	}
-	
+
 	/**
 	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
 	 * @param Type8:Customer service_UK Personal Subscription Issuebased_Optimistic_Single stage_CCC;  Renewal Strategy : Continuous;  Schedule:Direct & Optimistic; Offer: Issue based; Payment method: Credit Card
@@ -790,7 +794,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=25, dataProvider="databinding")
+	//@Test(priority=25, dataProvider="databinding")
 	public void demographicsVerification(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen by checking Demoghraphics");
@@ -807,7 +811,7 @@ public class CustomerServices extends CustomerServiceFunctions
 
 		TimeUnit.SECONDS.sleep(3);
 	}
-	
+
 	/**
 	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
 	 * @param Type8:Customer service_UK Personal Subscription Issuebased_Optimistic_Single stage_CCC;  Renewal Strategy : Continuous;  Schedule:Direct & Optimistic; Offer: Issue based; Payment method: Credit Card
@@ -816,7 +820,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param verifyNewSubscription function verify newly created subscription in CS screen
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
-	@Test(priority=26, dataProvider="databinding")
+	//@Test(priority=26, dataProvider="databinding")
 	public void customerEvents(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Verifying the Customer events for the Customer Refernce Number");
@@ -831,7 +835,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		/* Creating a new subscription */		
 		customerEventsVerification(driver, h.get("ReferenceNumber"), h.get("Client"), h.get("Brand"));
 	}
-	
+
 	/**
 	 * Method which is used to quit all the browser instances after execution
 	 * @throws Exception
@@ -842,12 +846,12 @@ public class CustomerServices extends CustomerServiceFunctions
 	{
 		try
 		{
-		element(driver, logOut).click();	
-		TimeUnit.SECONDS.sleep(2);
+			element(driver, logOut).click();	
+			TimeUnit.SECONDS.sleep(2);
 		}
 		catch(Exception e)
 		{
-			
+
 		}
 		for(WebDriver d : drivers)
 		{

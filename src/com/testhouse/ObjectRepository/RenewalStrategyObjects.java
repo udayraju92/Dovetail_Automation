@@ -51,7 +51,7 @@ public class RenewalStrategyObjects extends GeneralFunctions
 	
 	public By selectROffer(String offer)
 	{
-		By selectRoffer = By.xpath("//tr/td[@class='rich-table-cell center'  and text ()='"+offer+"']/following-sibling::td/input");
+		By selectRoffer = By.xpath("//tr/td[@class='rich-table-cell center'  and text()='"+offer+"']/following-sibling::td/input");
 		return selectRoffer;
 	}
 	public By selOffer = By.id("id_offerForm:j_id256");

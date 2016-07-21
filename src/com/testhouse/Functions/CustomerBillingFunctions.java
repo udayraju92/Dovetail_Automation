@@ -58,7 +58,7 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 				Assert.assertTrue(element(driver, verifyLedger).isDisplayed());
 				element(driver, accSubDet).click();
 				//billTerms = element(driver, billingTerms).getText();
-				Assert.assertTrue(element(driver, billingTerms).getText().contains("ISSUES"));
+				Assert.assertTrue(element(driver, billingTerms).getText().contains("MONTHS"));
 				optimis = element(driver, optimistic).getText();
 				Assert.assertEquals(optimis, "true");
 				ATUReports.add(" Order:"+orderRef+" has been successfully verified in Customer Billing screen with Billing Terms is issue based", orderRef,"Optimistic = true"," Optimistic =" + optimis,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
@@ -66,7 +66,7 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 			}
 			catch(AssertionError e)
 			{
-				ATUReports.add("Unable to verify the newly created subscription in Customer Billing Screen","Billing Terms: "+ billTerms,"Optimistic = " + optimis, LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+				ATUReports.add("Unable to verify the newly created subscription in Customer Billing Screen", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 				takeScreenShotOnFailure(driver, testName);
 				System.out.println(e);
 			}
@@ -83,6 +83,7 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 		testName = "verifyNewSubscriptionCBType2";
 		try
 		{
+			fetchDetailsCB(driver);
 			TimeUnit.SECONDS.sleep(3);
 			try 
 			{
@@ -127,7 +128,7 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 				billTerms = element(driver, billingTerms).getText();
 
 				//assertTrue(element(driver, billingTerms).getText().matches("ISSUES"));
-				Assert.assertTrue(element(driver, billingTerms).getText().contains("ISSUES"));
+				Assert.assertTrue(element(driver, billingTerms).getText().contains("MONTHS"));
 				//Assert.assertEquals(billTerms, "1,ISSUES,GBP,0,1");
 
 				optimis = element(driver, optimistic).getText();
@@ -189,6 +190,7 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 		testName = "verifyNewSubscriptionCBType1";
 		try
 		{
+			fetchDetailsCB(driver);
 			TimeUnit.SECONDS.sleep(3);
 			try
 			{
@@ -219,6 +221,37 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 		}
 	}
 	
+	public void verifyNewSubscriptionCBType6(WebDriver driver) throws Exception
+	{
+		testName = "verifyNewSubscriptionCBType1";
+		try
+		{
+			fetchDetailsCB(driver);
+			try
+			{
+				Assert.assertTrue(element(driver, verifyLedger).isDisplayed());
+				element(driver, accSubDet).click();
+				//billTerms = element(driver, billingTerms).getText();
+				Assert.assertTrue(element(driver, billingTerms).getText().contains("PRODUCT_ONLY"));
+				optimis = element(driver, optimistic).getText();
+				Assert.assertEquals(optimis, "false");
+				ATUReports.add(" Order:"+orderRef+" has been successfully verified in Customer Billing screen with Billing Terms is issue based", orderRef,"Optimistic = true"," Optimistic =" + optimis,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+				TimeUnit.SECONDS.sleep(5); 
+			}
+			catch(AssertionError e)
+			{
+				ATUReports.add("Unable to verify the newly created subscription in Customer Billing Screen", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+				takeScreenShotOnFailure(driver, testName);
+				System.out.println(e);
+			}
+		}
+		catch(Exception e1)
+		{
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e1);
+		}
+	}
+	
 	public void verifyNewSubscriptionCBType8(WebDriver driver) throws Exception
 	{
 		testName = "verifyNewSubscriptionCBType8";
@@ -231,6 +264,42 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 				element(driver, accSubDet).click();
 				//billTerms = element(driver, billingTerms).getText();
 				Assert.assertTrue(element(driver, billingTerms).getText().contains("ISSUES"));
+				optimis = element(driver, optimistic).getText();
+				Assert.assertEquals(optimis, "true");
+				ATUReports.add(" Order:"+orderRef+" has been successfully verified in Customer Billing screen with Billing Terms is issue based", orderRef,"Optimistic = true"," Optimistic =" + optimis,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+				TimeUnit.SECONDS.sleep(5); 
+			}
+			catch(AssertionError e)
+			{
+				ATUReports.add("Unable to verify the newly created subscription in Customer Billing Screen","Billing Terms: "+ billTerms,"Optimistic = " + optimis, LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+				takeScreenShotOnFailure(driver, testName);
+				System.out.println(e);
+			}
+		}
+		catch(Exception e1)
+		{
+			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e1);
+		}
+	}
+	
+	public void verifyNewSubscriptionCBType7(WebDriver driver) throws Exception
+	{
+		testName = "verifyNewSubscriptionCBType7";
+		try
+		{
+			fetchDetailsCB(driver);
+			TimeUnit.SECONDS.sleep(3);
+			try 
+			{
+				Assert.assertTrue(element(driver, verifyLedger).isDisplayed());
+				element(driver, accSubDet).click();
+				billTerms = element(driver, billingTerms).getText();
+
+				//assertTrue(element(driver, billingTerms).getText().matches("ISSUES"));
+				Assert.assertTrue(element(driver, billingTerms).getText().contains("MONTHS"));
+				//Assert.assertEquals(billTerms, "1,ISSUES,GBP,0,1");
+
 				optimis = element(driver, optimistic).getText();
 				Assert.assertEquals(optimis, "true");
 				ATUReports.add(" Order:"+orderRef+" has been successfully verified in Customer Billing screen with Billing Terms is issue based", orderRef,"Optimistic = true"," Optimistic =" + optimis,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));

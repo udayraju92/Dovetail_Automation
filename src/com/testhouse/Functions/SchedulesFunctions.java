@@ -101,11 +101,16 @@ public class SchedulesFunctions extends SchedulesObjects
 			element(driver, scheduleEventsBtn).click();
 			TimeUnit.SECONDS.sleep(5);
 			element(driver, newEventBtn).click();
-			TimeUnit.SECONDS.sleep(3);
+			TimeUnit.SECONDS.sleep(8);
+		
 			Select(element(driver, eventWhen)).selectByVisibleText(when);
-			TimeUnit.SECONDS.sleep(3);
+			
+			TimeUnit.SECONDS.sleep(8);
+		
 			Select(element(driver, eventDeliveryType)).selectByVisibleText(delType);
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(8);
+			//element(driver, eventNextBtn).click();
+			TimeUnit.SECONDS.sleep(8);
 			if(prod.equals("Yes")||prod.equals("yes"))
 			{
 				element(driver, pActiveCheck).click();
@@ -126,15 +131,22 @@ public class SchedulesFunctions extends SchedulesObjects
 			if(bDelivery.equals("Include Only")||bDelivery.equals("Include Only"))
 			{
 				element(driver, backDelivery).click();
-				TimeUnit.SECONDS.sleep(2);
+
+
 				for (int i = 1; i <= 100; i++)
 				{
 					try
-					{String eveDelv =null;
-					eveDelv = element(driver, eventDelivery(bissues)).getTagName()+"   "+element(driver, eventDelivery(bissues)).getLocation();
+					{
+						TimeUnit.SECONDS.sleep(8);
+						//String te = element(driver, test1).getText();
+						System.out.println(eventDelivery(bissues));
+						element(driver, eventDelivery(bissues)).click();
+						if(!element(driver, eventDelivery(bissues)).isSelected())
+						{
+							element(driver, eventDelivery(bissues)).click();
 
-					TimeUnit.SECONDS.sleep(7);
-					break;
+						}
+						break;
 					}
 
 					catch (Exception e)
@@ -199,6 +211,7 @@ public class SchedulesFunctions extends SchedulesObjects
 		{
 			ATUReports.add("Unable to create a new schedule", LogAs.FAILED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 			takeScreenShotOnFailure(driver, testName);
+			System.out.println(e);
 		}
 	}
 
