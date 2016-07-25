@@ -2,12 +2,8 @@ package com.testhouse.Functions;
 
 import java.util.concurrent.TimeUnit;
 
-import org.joda.time.DateTime;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.testhouse.ObjectRepository.SubscriptionManagementObjects;
@@ -104,7 +100,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			element(driver, promotion_Search).click();
 			TimeUnit.SECONDS.sleep(10);
 			System.out.println("Click happened");
-			waitForElement1(driver, promotion_PromotionDialog);
+			waitForElement(driver, promotion_PromotionDialog);
 			System.out.println("Dialog dispalyed");
 			elementHighlight(driver, promotion_SelectPromotion(promotionName));
 			element(driver, promotion_SelectPromotion(promotionName)).click();
@@ -132,7 +128,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			element(driver, promotion_PromotionName).sendKeys(promotionName);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, promotion_Search).click();
-			waitForElement1(driver, promotion_PromotionDialog);
+			waitForElement(driver, promotion_PromotionDialog);
 
 			elementHighlight(driver, promotion_SelectPromotion(promotionName));
 			element(driver, promotion_SelectPromotion(promotionName)).click();
@@ -232,7 +228,7 @@ public class SubscriptionManagementFunctions extends SubscriptionManagementObjec
 			element(driver, addressDetails_Postcode).sendKeys(postCode);
 			TimeUnit.SECONDS.sleep(1);
 			element(driver, addressDetails_PostCodeSearch).click();
-			waitForElement1(driver, addressDetails_SelectAddress_Dialog);
+			waitForElement(driver, addressDetails_SelectAddress_Dialog);
 			System.out.println("dialog displayed" + addressDetails_SelectAddress(address));
 			element(driver, addressDetails_SelectAddress(address)).click();
 			waitForElementToVanish(driver, spinnerSM);

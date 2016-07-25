@@ -15,6 +15,7 @@ import com.testhouse.ObjectRepository.SchedulesObjects;
 public class SchedulesFunctions extends SchedulesObjects
 {
 	public static String testName;
+	String maintenSchedule = null;
 
 	/**
 	 * Method to create a new standard schedule
@@ -81,6 +82,7 @@ public class SchedulesFunctions extends SchedulesObjects
 			element(driver, scheduleName).click();
 			element(driver, scheduleName).clear();
 			element(driver, scheduleName).sendKeys(""+name+""+" "+dateFolder+"");
+			maintenSchedule = ""+name+""+" "+dateFolder+"";
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, scheduleDesc).sendKeys(description);
 			if(opt.equals("Yes")||opt.equals("yes"))
@@ -217,14 +219,17 @@ public class SchedulesFunctions extends SchedulesObjects
 
 
 	/**
-	 * Method to create a new standard schedule
+	 * Method to edit a schedule; Precondition: Run any create schedule process to get "maintenSchedule"
 	 * @param driver Object for webDriver
 	 * @param maintenance of schedule - Edit and save, move to offer page from schedule
+	 * @param maintenSchedule is the schedule to be edited
 	 */
 	public void maintSchedule(WebDriver driver, String client, String brand, String schedule, String newName, String newDesc) throws Exception
 	{
 		try
-		{
+		{TimeUnit.SECONDS.sleep(3);
+		DateTime dt = DateTime.now();
+		String dateFolder = dt.toLocalDate().toString();
 			element(driver, accountAdminLink).click();	
 			TimeUnit.SECONDS.sleep(10);
 			for (String winHandle : driver.getWindowHandles()) 
@@ -251,10 +256,26 @@ public class SchedulesFunctions extends SchedulesObjects
 			}	
 			TimeUnit.SECONDS.sleep(8);
 
-			element(driver, editSchedule(schedule)).click();
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					element(driver, editSchedule(maintenSchedule)).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastForward1).click();
+				}
+			}
+			
+			
+		
 			TimeUnit.SECONDS.sleep(8);
 			element(driver, scheduleName).clear();
-			element(driver, scheduleName).sendKeys(newName);
+			element(driver, scheduleName).sendKeys(""+newName+""+" "+dateFolder+"");
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, scheduleDesc).sendKeys(newDesc);
 			TimeUnit.SECONDS.sleep(3);
@@ -265,9 +286,9 @@ public class SchedulesFunctions extends SchedulesObjects
 			TimeUnit.SECONDS.sleep(2);
 			TimeUnit.SECONDS.sleep(3);
 
-			if(element(driver, findSchedule(newName)).isDisplayed())
+			if(element(driver, findSchedule(""+newName+""+" "+dateFolder+"")).isDisplayed())
 			{
-				ATUReports.add("Edit schedule Successfull: "+ newName, LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+				ATUReports.add("Edit schedule Successfull: "+ ""+newName+""+" "+dateFolder+"", LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 			}
 
 			else
@@ -276,7 +297,23 @@ public class SchedulesFunctions extends SchedulesObjects
 				takeScreenShotOnFailure(driver, testName);
 			}
 			//To check whether user can navigate to offer page from schedules
-			element(driver, editSchedule(schedule)).click();
+			for (int i = 1; i <= 100; i++)
+			{
+				try
+				{
+					TimeUnit.SECONDS.sleep(8);
+					element(driver, editSchedule(""+newName+""+" "+dateFolder+"")).click();
+					TimeUnit.SECONDS.sleep(7);
+					break;
+				}
+
+				catch (Exception e)
+				{
+					element(driver, fastForward1).click();
+				}
+			}
+			
+		
 			TimeUnit.SECONDS.sleep(3);
 			element(driver, schOffer).click();
 			TimeUnit.SECONDS.sleep(3);

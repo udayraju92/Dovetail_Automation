@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import org.omg.CORBA.TIMEOUT;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -31,7 +29,6 @@ import automation_home.ddf.constants.ExcelConstants;
 import automation_home.ddf.wrapper.Wrapper;
 import automation_home.ddf.wrapperimpl.ExcelWrapper;
 
-import com.testhouse.Functions.CustomerBillingFunctions;
 import com.testhouse.Functions.CustomerServiceFunctions;
 import com.testhouse.Functions.SubscriptionManagementFunctions;
 
@@ -134,6 +131,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	 * @throws Exception 
 	 * @param newSubscription function to create a new subscription
 	 */
+	@SuppressWarnings("static-access")
 	@Test(priority=0, dataProvider="databinding")
 	public void newSubscription(HashMap<String, String> h) throws Exception
 	{
@@ -174,6 +172,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	 * @throws Exception 
 	 * @param renewalSubscription function to create a renewal subscription
 	 */
+	@SuppressWarnings("static-access")
 	@Test(priority=1, dataProvider="databinding")
 	public void renewalSubscription(HashMap<String, String> h) throws Exception
 	{
@@ -213,6 +212,7 @@ public class SubscriptionManagement extends SubscriptionManagementFunctions
 	 * @throws Exception 
 	 * @param productOnlySubscription function to create a new product only subscription
 	 */
+	@SuppressWarnings("static-access")
 	@Test(priority=2, dataProvider="databinding")
 	public void productOnlySubscription(HashMap<String, String> h) throws Exception
 	{

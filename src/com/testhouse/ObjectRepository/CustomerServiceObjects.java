@@ -1,5 +1,6 @@
 package com.testhouse.ObjectRepository;
 
+import org.joda.time.DateTime;
 import org.openqa.selenium.By;
 
 /**
@@ -17,7 +18,7 @@ public class CustomerServiceObjects
 	public By logOut = By.linkText("Logout");
 
 
-	public By spinner = By.xpath("//*[contains(@id,'SpinnerGif')]");
+	public By spinner = By.xpath("//img[contains(@id,'SpinnerGif')]");
 
 
 	/* Customer Service Objects */
@@ -73,15 +74,25 @@ public class CustomerServiceObjects
 	public By deliveryPostCode = By.id("id_newCustomerDetailsForm:id_customerDeliveryPostCodeDecorator:id_customerDeliveryPostCode");
 	public By deliveryLookupAddress = By.id("id_newCustomerDetailsForm:id_customerDeliveryAddressLookupButton");
 	public By selectDeliveryAddress = By.name("id_newCustomerDetailsForm:j_id186");
-	public By verifyDeliveryAddress = By.id("//*[@id='issueCalendarForm:j_id135']");
-	public By verifyBillingAddress = By.id("//*[@id='issueCalendarForm:j_id146']");
+	public By verifyDeliveryAddress(String postCode) 
+	{
+		return By.xpath("//span[text()='"+postCode+"' and @id='issueCalendarForm:id_textCustPostCode']");
+	}
+	public By verifyBillingAddress(String postCode) 
+	{
+		return By.xpath("//span[text()='"+postCode+"' and @id='issueCalendarForm:id_textBillingPO']");
+	}
 	
 	public By demographics(String demographicProperty1, String demographicProperty2, String demographicProperty3)
 	{
 		By demographics = By.xpath(".//tr[td[contains(@id,'j_id214') and contains(text(),'"+demographicProperty1+"')] and td[contains(@id,'j_id216') and contains(text(),'"+demographicProperty2+"')] and  td[contains(@id,'j_id218') and contains(text(),'"+demographicProperty3+"')]]/td[4]/input");
 		return demographics;
 	}
-
+	
+	public By contactReason = By.xpath("//*[contains(@id,'id_contactReasonCombocomboboxButton')]");
+	public By selectReason = By.xpath("//span[text()='Billing and Payment - Refund Request' and @class='rich-combobox-item']");
+	public By saveReason = By.id("j_id9:id_saveReason");
+	
 	// Verify the newly created order
 	public By homeLink = By.linkText("Main Menu");
 	public By csHomeLink = By.linkText("CS_HOME");
@@ -99,6 +110,8 @@ public class CustomerServiceObjects
 		By viewCustomer = By.xpath("//*[contains(text(),'"+orderNum+"')]/following::td/input");
 		return viewCustomer;
 	}
+	
+	public By viewCustomerButton = By.xpath("//table[@id='searchCriteria:customerTable']/tbody/tr[1]/td/input");
 
 	public By verifyCustomerRef = By.id("summaryform:id_textCustOptionRef");
 	public By verifyContractStatus = By.id("summaryform:id_currContractStatustext");
@@ -120,8 +133,8 @@ public class CustomerServiceObjects
 	public By gFirstName = By.id("id_newCustomerDetailsForm:id_recipientFirstNameDecorator:id_recipientFirstName");
 	public By gSurName = By.id("id_newCustomerDetailsForm:id_recipientSurnameDecorator:id_recipientSurName");
 	public By gPostCode = By.id("id_newCustomerDetailsForm:id_recipientPostCodeDecorator:id_recipientPostCode");
-	public By gLookupAddress = By.id("id_newCustomerDetailsForm:id_customerBillingAddressLookupButton");
-	public By gSelectAddress = By.name("id_newCustomerDetailsForm:j_id147");
+	public By gLookupAddress = By.id("id_newCustomerDetailsForm:id_custRecipientAddressLookupButton");
+	public By gSelectAddress = By.name("id_newCustomerDetailsForm:j_id285");
 	public By gSaveButton = By.name("id_newCustomerDetailsForm:id_saveRecipientCustomerButton");
 	public By gAddMoreButton = By.id("id_newCustomerDetailsForm:id_addNewRecipientCustomerButton");
 	public By gRecipientName(String gTitle, String gFirstName, String gSurName)
@@ -169,21 +182,21 @@ public class CustomerServiceObjects
 
 	//Search CS screen
 	public By verifySearch = By.xpath("//input[contains(@id, 'selectCustomerButton')]");
-	public By addressLine = By.id("searchCriteria:id_line1inputtext");
+	public By addressLineSearch = By.id("searchCriteria:id_line1inputtext");
 	public By postcodeSearch = By.id("searchCriteria:id_postcodeinputtext");
-	public By companyName = By.id("searchCriteria:id_companynameinputtext");
-	public By lastName = By.id("searchCriteria:id_line1inputtext");
+	public By companyNameSearch = By.id("searchCriteria:id_companynameinputtext");
+	public By lastNameSearch = By.id("searchCriteria:id_line1inputtext");
 	public By firstNameSearch = By.id("searchCriteria:id_forenameinputtext");
-	public By email = By.id("searchCriteria:id_Emailinputtext");
+	public By emailSearch = By.id("searchCriteria:id_Emailinputtext");
 	public By accNumberSearch = By.id("searchCriteria:id_accountnumberinputtext");
 	public By sortCodeSearch = By.id("searchCriteria:id_sortcodeinputtext");
-	public By creditCardNum = By.id("searchCriteria:id_cccardnumberinputtext");
-	public By country = By.id("searchCriteria:id_countrylistmenu");
-	public By orderReference = By.id("searchCriteria:id_orderreferencetext");
-	public By PrevSubRefernece = By.id("searchCriteria:id_prevsubrefinputtext");
-	public By webID = By.id("searchCriteria:id_webidinputtext");
-	public By chequeNumber = By.id("searchCriteria:id_chequenumberinputtext");
-	public By invoiceNumber = By.id("searchCriteria:id_invoicenumberinputtext");
+	public By creditCardNumSearch = By.id("searchCriteria:id_cccardnumberinputtext");
+	public By countrySearch = By.id("searchCriteria:id_countrylistmenu");
+	public By orderReferenceSearch = By.id("searchCriteria:id_orderreferencetext");
+	public By PrevSubReferneceSearch = By.id("searchCriteria:id_prevsubrefinputtext");
+	public By webIDSearch = By.id("searchCriteria:id_webidinputtext");
+	public By chequeNumberSearch = By.id("searchCriteria:id_chequenumberinputtext");
+	public By invoiceNumberSearch = By.id("searchCriteria:id_invoicenumberinputtext");
 
 	//Overseas
 	public By selectCountry = By.id("form:id_countryMenu");
@@ -272,8 +285,14 @@ public class CustomerServiceObjects
 	public By changeTerm_IssueType = By.id("transEnquiryform:id_amendTermIssueTypeMenu");
 	public By changeTerm_NoOfIssues = By.id("transEnquiryform:id_inputTextAmendContractTermNoOfIssues");
 	public By changeTerm_Save = By.xpath("//input[@type='submit' and @value='Save']");
-	public By changeTermVerification = By.xpath("//table[@id='historyform:j_id69']/tbody/tr[last()]/td[3]");
-	public By changeTermVerification1 = By.xpath("//table[@id='historyform:j_id69']/tbody/tr[last()]/td[4]");
+	public By changeTermVerification(String reason) 
+	{
+		return By.xpath("//table[@id='historyform:j_id69']/tbody/tr[last()]/td[3][contains(text(),'"+reason+"')]");
+	}
+	public By changeTermVerification1(String action, String issueType, String noOfIssues)
+	{
+		return By.xpath("//table[@id='historyform:j_id69']/tbody/tr[last()]/td[4][contains(text(),'Change request for "+action+" with Issue Numbers : "+noOfIssues+", Issue Type : "+issueType+", Date : "+DateTime.now().toString("dd/MM/yyyy")+"')]");	
+	}
 
 	//Amend Contract - Payment Details
 	public By paymentDetails = By.id("transEnquiryform:id_amendContractButtonPaymentDetails");

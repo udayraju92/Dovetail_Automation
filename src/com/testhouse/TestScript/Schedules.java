@@ -232,15 +232,9 @@ public class Schedules extends SchedulesFunctions
 	@AfterMethod(alwaysRun=true)
 	public void tearDown() throws Exception 
 	{
-		try
-		{
 		element(driver, logOut).click();	
 		TimeUnit.SECONDS.sleep(2);
-		}
-		catch(Exception e)
-		{
-			
-		}
+
 		for(WebDriver d : drivers)
 		{
 			d.quit();

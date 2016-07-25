@@ -19,10 +19,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.joda.time.DateTime;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -32,7 +28,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
@@ -147,28 +142,22 @@ public class GeneralFunctions extends CustomerServiceObjects
 	 * @param WebDriver	The driver object to be used 
 	 * @param By	selector to find the element
 	 * @param int	The time in seconds to wait until returning a failure
+	 * @throws Exception 
 	 * 
 	 */
-	public void waitForElementToVanish(WebDriver driver, final By by) 
+	public void waitForElementToVanish(WebDriver driver, final By by) throws Exception 
 	{
-		try
-		{	
-			for (int i=1; i<=100; i++)
-			{
-				if(element(driver, by).isDisplayed())
-				{
-					TimeUnit.SECONDS.sleep(2);
-				}
-				else
-				{
-					break;
-				}
-			}
 
-		} 
-		catch (Exception e) 
+		for (int i=1; i<=100; i++)
 		{
-			e.printStackTrace();
+			if(element(driver, by).isDisplayed())
+			{
+				TimeUnit.SECONDS.sleep(2);
+			}
+			else
+			{
+				break;
+			}
 		}
 	}
 
@@ -362,21 +351,6 @@ public class GeneralFunctions extends CustomerServiceObjects
 			js.executeScript(
 					"arguments[0].setAttribute('style', arguments[1]);",
 					element(driver, by), "");
-		}
-	}
-
-	public void waitForElement1(WebDriver driver, By by) throws InterruptedException
-	{
-		for (int i=1; i<=100; i++)
-		{
-			if(!element(driver, by).isDisplayed())
-			{
-				TimeUnit.SECONDS.sleep(2);
-			}
-			else
-			{
-				break;
-			}
 		}
 	}
 

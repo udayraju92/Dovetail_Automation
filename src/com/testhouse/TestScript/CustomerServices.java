@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import org.omg.CORBA.TIMEOUT;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -228,7 +226,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
 
-	//@Test(priority=3, dataProvider="databinding")
+	@Test(priority=3, dataProvider="databinding")
 	public void customerServiceType4(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Customer service screen");
@@ -259,7 +257,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
 	 */
 	//@Test(priority=4, dataProvider="databinding")
-	public void customerServiceTypeSearch(HashMap<String, String> h) throws Exception
+	public void customerServiceTypeSearch_CustomerReference(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
 		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
@@ -271,9 +269,378 @@ public class CustomerServices extends CustomerServiceFunctions
 		login(driver, h.get("Username"), h.get("Password"), testName);
 
 		/* Creating a new subscription */		
-		//searchCs(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("AddressLine"), h.get("PostCode"), h.get("CompanyName"), h.get("LastName"), h.get("FirstName"), h.get("Email"), h.get("AccountNumber"), h.get("SortCode"), h.get("CCNumber"), h.get("Country"));
+		searchCs_CustomerReference(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"));
 		TimeUnit.SECONDS.sleep(3);
 	}
+
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_OrderReference(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_OrderReference(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("OrderReferenceNumber"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_PrevSubscriptionreference(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_PreviousSubscriptionReference(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("PrevSubscriptionReference"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_AddressLine(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_AddressLine(driver, h.get("Client"), h.get("Brand"), h.get("AddressLine"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_PostCode(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_PostCode(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("PostCodeS"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_CompanyName(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_CompanyName(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("CompanyName"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_LastName(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_LastName(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("LastName"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_FirstName(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_FirstName(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("FirstName"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_Email(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_Email(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("Email"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_WebID(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_WebID(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("WebID"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_AccountNumber(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_AccountNumber(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("AccountNumber"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_SortCode(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_SortCode(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("SortCode"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_CreditCardNumber(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_CreditCardNumber(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("CreditCardNumber"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_ChequeNumber(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_ChequeNumber(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("ChequeNumber"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_InvoiceNumber(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_InvoiceNumber(driver, h.get("Client"), h.get("Brand"), h.get("CustomerReference"), h.get("InvoiceNumber"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	
+	/**
+	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
+	 * @throws Exception 
+	 * @param newSubscription function to create a new subscription
+	 * @param verifyNewSubscription function verify newly created subscription in CS screen
+	 * @param cbf.verifyNewSubscriptionCB function to verify newly created subscription in Customer Billing screen
+	 */
+	//@Test(priority=4, dataProvider="databinding")
+	public void customerServiceTypeSearch_Country(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Searching new subscription through Customer service screen");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		/* Login Section */
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+
+		/* Creating a new subscription */		
+		searchCs_Country(driver, h.get("Client"), h.get("Brand"), h.get("Country"));
+		TimeUnit.SECONDS.sleep(3);
+	}
+	
+	
+	
 	/**
 	 * Test to perform a new subscription via Customer Service screen and to verify it in CS and Customer Billing screens
 	 * @param Type5: Customer service_UK Gift Subscription Issuebased_Optimistic_Single stage_DD; Renewal Strategy : Single stage;  Schedule:Direct & Optimistic; Offer: Issue based; Payment method: Direct Debit
@@ -543,12 +910,12 @@ public class CustomerServices extends CustomerServiceFunctions
 	}
 
 	/**
-	 * Test to check whether user can Amend Contract through Resume from CS screen
+	 * Test to check whether user can Amend Contract through Resume from CS screen - Customer Reference Number provided should be Active and should be Credit Card payment
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=15, dataProvider="databinding")
+	//@Test(priority=15, dataProvider="databinding")
 	public void cSAmendContract_ChangeTerm(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by changing Term");
@@ -566,7 +933,7 @@ public class CustomerServices extends CustomerServiceFunctions
 	}
 
 	/**
-	 * Test to check whether user can Amend Contract through Resume from CS screen
+	 * Test to check whether user can Amend Contract through Resume from CS screen 
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
@@ -589,12 +956,12 @@ public class CustomerServices extends CustomerServiceFunctions
 	}
 
 	/**
-	 * Test to check whether user can Amend Contract through Resume from CS screen
+	 * Test to check whether user can Amend Contract through Add Payment from CS screen _ Customer Reference number should be in suspended state and is a Direct Debit Payment
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
-	@Test(priority=17, dataProvider="databinding")
+	//@Test(priority=17, dataProvider="databinding")
 	public void cSAmendContract_AddPayment(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Amending the existing subscription by Adding Payment");
@@ -635,9 +1002,9 @@ public class CustomerServices extends CustomerServiceFunctions
 	}
 
 	/**
-	 * Test to check whether user can Amend Contract through Resume from CS screen
+	 * Test to check whether user can Amend Contract through Cancel Immediately from CS screen
 	 * @throws Exception 
-	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
+	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume - Customer Reference Number provided should be Active
 	 * @param Reference Number should be of a Credit Card Subscription 
 	 */
 	//@Test(priority=20, dataProvider="databinding")
@@ -659,7 +1026,7 @@ public class CustomerServices extends CustomerServiceFunctions
 
 
 	/**
-	 * Test to check whether user can Amend Contract through Resume from CS screen
+	 * Test to check whether user can Amend Contract through Resume from CS screen - Customer Reference Number provided should be Active
 	 * @throws Exception 
 	 * @param amendContract_Suspend function to Amend Contract in Transaction Enquiry through Resume
 	 * @param Reference Number should be of a Credit Card Subscription 
@@ -780,7 +1147,7 @@ public class CustomerServices extends CustomerServiceFunctions
 		login(driver, h.get("Username"), h.get("Password"), testName);
 
 		/* Creating a new subscription */		
-		giftSubscriptionRecepientDetails(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("PostCode"), h.get("Address"), h.get("GCustTitle"), h.get("GFirstname"), h.get("GSurname"), h.get("GPostcode"), h.get("GAddress"), h.get("GCustTitle1"), h.get("GFirstname1"), h.get("GSurname1"), h.get("GCustTitle2"), h.get("GFirstname2"), h.get("GSurname2"), h.get("GEditCustTitle"), h.get("GEditFirstName"), h.get("GEditSurname"), h.get("Name"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
+		giftSubscriptionRecepientDetails(driver, h.get("Client"), h.get("Brand"), h.get("PromotionName"), h.get("Card"), h.get("Title"), h.get("Firstname"), h.get("Surname"), h.get("Postcode"), h.get("Address"), h.get("GCustTitle"), h.get("GFirstname"), h.get("GSurname"), h.get("GPostcode"), h.get("GAddress"), h.get("GCustTitle1"), h.get("GFirstname1"), h.get("GSurname1"), h.get("GCustTitle2"), h.get("GFirstname2"), h.get("GSurname2"), h.get("GEditCustTitle"), h.get("GEditFirstName"), h.get("GEditSurname"), h.get("Name"), h.get("Card1"), h.get("ExpiryDate"), h.get("ExpiryYear"));
 
 		TimeUnit.SECONDS.sleep(3);
 

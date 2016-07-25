@@ -25,6 +25,19 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 		{
 			TimeUnit.SECONDS.sleep(5);
 			element(driver, homeLink).click();
+			TimeUnit.SECONDS.sleep(3);
+			try
+			{
+				element(driver, contactReason).click();
+				TimeUnit.SECONDS.sleep(5);
+				element(driver, selectReason).click();
+				TimeUnit.SECONDS.sleep(5);
+				element(driver, saveReason).click();
+				TimeUnit.SECONDS.sleep(5);
+			}
+			catch(Exception e)
+			{
+			}
 			element(driver, customerBillingLink).click();
 			TimeUnit.SECONDS.sleep(10);
 			for (String winHandle : driver.getWindowHandles()) 
@@ -44,7 +57,7 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 		}
 		catch(Exception e)
 		{
-			ATUReports.add("Unable to fetch details from CS screen",LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
+			ATUReports.add("Unable to fetch details from CB screen",LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));
 		}
 	}
 	public void verifyNewSubscriptionCBType1(WebDriver driver) throws Exception
@@ -263,7 +276,7 @@ public class CustomerBillingFunctions extends CustomerBillingObjects
 				Assert.assertTrue(element(driver, verifyLedger).isDisplayed());
 				element(driver, accSubDet).click();
 				//billTerms = element(driver, billingTerms).getText();
-				Assert.assertTrue(element(driver, billingTerms).getText().contains("ISSUES"));
+				Assert.assertTrue(element(driver, billingTerms).getText().contains("MONTHS"));
 				optimis = element(driver, optimistic).getText();
 				Assert.assertEquals(optimis, "true");
 				ATUReports.add(" Order:"+orderRef+" has been successfully verified in Customer Billing screen with Billing Terms is issue based", orderRef,"Optimistic = true"," Optimistic =" + optimis,LogAs.PASSED, new CaptureScreen(ScreenshotOf.BROWSER_PAGE));

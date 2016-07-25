@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import org.joda.time.DateTime;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -30,7 +28,6 @@ import automation_home.ddf.constants.ExcelConstants;
 import automation_home.ddf.wrapper.Wrapper;
 import automation_home.ddf.wrapperimpl.ExcelWrapper;
 
-import com.testhouse.Functions.CustomerServiceFunctions;
 import com.testhouse.Functions.ProductFunctions;
 
 /**
@@ -62,7 +59,7 @@ public class Products extends ProductFunctions
 		Properties systemProperties = System.getProperties();
 		systemProperties.setProperty("atu.reporter.config", System.getProperty("user.dir").concat(props.getProperty("atuPropertiesFilePath")));	
 	}
-	
+
 	/**
 	 * Method to fetch the browser which needs to be launched during parallel execution 
 	 * @param browser Name of the browser which needs to be executed
@@ -113,7 +110,7 @@ public class Products extends ProductFunctions
 	{ 				
 		testName = method.getName();
 		wrapper.setParameter(ExcelConstants.FILE_PATH, System.getProperty("user.dir").concat(props.getProperty("testDataFilePath")));
-		wrapper.setParameter(ExcelConstants.SHEET_NAME, "Subscription Management");
+		wrapper.setParameter(ExcelConstants.SHEET_NAME, "Products");
 		wrapper.setParameter(ExcelConstants.TESTCASE_NAME, testName);
 		wrapper.setParameter(ExcelConstants.TESTCASE_START_ELEMENT, "_START");
 		wrapper.setParameter(ExcelConstants.TESTCASE_END_ELEMENT, "_END");
@@ -122,31 +119,67 @@ public class Products extends ProductFunctions
 		wrapper.setParameter(ExcelConstants.INCLUDE_TESTDATA_NO, "No-Run");
 		return wrapper.retrieveTestData();
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Test to perform a new subscription via Subscription Management screen and to verify it in Customer Service screens
 	 * @throws Exception 
 	 * @param newSubscription function to create a new subscription
 	 */
-	@Test(priority=0, dataProvider="databinding")
-	public void newSubscription(HashMap<String, String> h) throws Exception
+	//@Test(priority=0, dataProvider="databinding")
+	public void manageMerchandise(HashMap<String, String> h) throws Exception
 	{
 		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Subscription Management");
 		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
 
-		 //Login Section 
-		 driver.get(props.getProperty("baseUrl"));
-		//driver.manage().window().maximize();
-		//TimeUnit.SECONDS.sleep(3);
-		//login(driver, h.get("Username"), h.get("Password"), testName);
-		String merchandisedescription = "Test "+ DateTime.now().toString("dd-MM-yy hh-mm-ss"); 
-		System.out.println(merchandisedescription);
-			
+		//Login Section 
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+		
+		manageMerchandise(driver, h.get("Client"), h.get("Brand"), h.get("MerchandiseName"), h.get("BrandAssociation"), h.get("StockAssociationPercentage"), h.get("DepletionOption"));
+		
+		verifyMerchandise(driver, h.get("Client"), h.get("Brand"), h.get("BrandAssociation"), h.get("StockAssociationPercentage"));
+	}
+	
+	@Test(priority=1, dataProvider="databinding")
+	public void manageClients(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Subscription Management");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		//Login Section 
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+		
+		manageClient_NewClient(driver, h.get("Name"), h.get("SagaReference"), h.get("Tolerance"));
+		
+		manageClient_VerifyClient(driver);
+	
+		manageClient_EditClient(driver, h.get("Client"), h.get("Brand"), h.get("Group"), h.get("ContactType"), h.get("Reference"), h.get("QuestionType"));
+		
+		manageClient_ViewClient(driver);
+	}
+	
+	//@Test(priority=2, dataProvider="databinding")
+	public void manageBrands(HashMap<String, String> h) throws Exception
+	{
+		ATUReports.setTestCaseReqCoverage("Creating a new subscription through Subscription Management");
+		ATUReports.setAuthorInfo("Automation Tester", Utils.getCurrentTime(),"1.0");	
+
+		//Login Section 
+		driver.get(props.getProperty("baseUrl"));
+		driver.manage().window().maximize();
+		TimeUnit.SECONDS.sleep(3);
+		login(driver, h.get("Username"), h.get("Password"), testName);
+		
 	}
 
-	
+
 	/**
 	 * Method which is used to quit all the browser instances after execution
 	 * @throws Exception
@@ -157,11 +190,11 @@ public class Products extends ProductFunctions
 	{
 		try
 		{
-		element(driver, logOut).click();	
-		TimeUnit.SECONDS.sleep(2);
+			element(driver, logOut).click();	
+			TimeUnit.SECONDS.sleep(2);
 		}catch(Exception e)
 		{
-			
+
 		}		
 
 		for(WebDriver d : drivers)

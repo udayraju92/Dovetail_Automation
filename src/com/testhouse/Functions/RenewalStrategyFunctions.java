@@ -10,7 +10,6 @@ import atu.testng.reports.logging.LogAs;
 import atu.testng.selenium.reports.CaptureScreen;
 import atu.testng.selenium.reports.CaptureScreen.ScreenshotOf;
 
-import com.testhouse.ObjectRepository.SchedulesObjects;
 import com.testhouse.ObjectRepository.RenewalStrategyObjects;
 
 public class RenewalStrategyFunctions extends RenewalStrategyObjects

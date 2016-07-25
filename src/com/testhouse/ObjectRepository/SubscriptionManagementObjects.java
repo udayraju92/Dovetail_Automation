@@ -3,7 +3,6 @@ package com.testhouse.ObjectRepository;
 import org.openqa.selenium.By;
 
 import com.testhouse.Functions.GeneralFunctions;
-import com.testhouse.Functions.RenewalStrategyFunctions;
 
 /**
  * Class file to store all the objects which are relavent for the application

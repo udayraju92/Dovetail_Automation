@@ -58,6 +58,8 @@ public class SchedulesObjects extends GeneralFunctions
 	}
 	public By schOffer = By.id("id_scheduleForm:id_offersButton");
 	public By offerManager = By.xpath("//*[contains(text(),'Offers')]");
+	public By fastForward1 = By.xpath("//*[@id='id_scheduleListform:j_id97_table']/tbody/tr/td[15]");
+	
 	
 	
 	/* New Event */
